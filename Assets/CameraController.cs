@@ -12,12 +12,12 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
-        pos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        dampTime = (2 / Vector2.Distance(player.position,transform.position));
         pos = new Vector3(player.position.x, player.position.y,-10.0f);
         transform.position = Vector3.SmoothDamp(gameObject.transform.position, pos, ref velocity, dampTime);
     }
