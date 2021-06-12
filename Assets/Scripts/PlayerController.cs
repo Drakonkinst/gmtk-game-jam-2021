@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Specialized;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -18,18 +18,28 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        xIn = Input.GetAxis("Horizontal");
-        //yIn = Input.GetAxis("Vertical");
-        rb.AddForce(new Vector2(xIn * moveSpeed * Time.smoothDeltaTime,0.0f),ForceMode2D.Impulse);
+        if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d"))
+        {
+            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
+        }
+        else if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a"))
+        {
+            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+        }
+        else 
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
 
         time = time + Time.deltaTime;
 
         if(Input.GetKeyDown(KeyCode.Space) && time >= nextJump)
         {
             nextJump = time + jumpCooldown;
-            rb.AddForce(new Vector2(0.0f, jumpForce),ForceMode2D.Impulse);
+            rb.velocity += new Vector2(0.0f, jumpForce);
         }
     }
+
 }
