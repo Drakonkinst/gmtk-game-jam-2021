@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Chain
   - Platform
+  - Ball
   layers:
   - Default
   - TransparentFX

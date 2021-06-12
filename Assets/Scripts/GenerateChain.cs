@@ -45,6 +45,7 @@ public class GenerateChain : MonoBehaviour
         ballWeight.transform.position = currPos;
         joint.connectedBody = ballWeight.GetComponent<Rigidbody2D>();
         joint.connectedAnchor = Vector2.zero;
+        ballWeight.GetComponent<Collider2D>().tag = "Ball";
         ballRB = ballWeight.GetComponent<Rigidbody2D>();
 
         //Debug.Log(linkSeparation + ", " + ballRadius);

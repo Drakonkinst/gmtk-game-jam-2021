@@ -48,9 +48,15 @@ public class BallController : MonoBehaviour
             if (dist > chainLength)
             {
                 // Should modify velocity so it can do its own movement, do not set Transform
+                Debug.Log("Using reset");
                 Vector2 newDirection = -ballToPlayer.normalized + rb.velocity.normalized;
                 rb.velocity = newDirection * currentSpeed;
             }
+            else
+            {
+                Debug.Log("Using normal");
+            }
+            Debug.Log("Final Velocity: " + rb.velocity);
         }
         else
         {
@@ -60,6 +66,7 @@ public class BallController : MonoBehaviour
             //rb.velocity += newDirection * maxSpeed;
             //}
         }
+
     }
 
     public void SetPoweredState(bool flag)
