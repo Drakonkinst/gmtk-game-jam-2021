@@ -1,34 +1,40 @@
-using System;
-using System.Security.Cryptography;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
-    public float speed = 1.0f;
-    private Vector2 pos;
-    private Vector2 vel;
-    private Vector2 acc;
-    private GameObject player;
-    private Vector2 target;
-    // Start is called before the first frame update
-    void Start()
+    public static CameraController instance;
+
+    private Transform target;
+    public float dampTime = 0.5f;
+    private Vector3 pos;
+    private Vector3 velocity = Vector3.zero;
+
+    private void Awake()
     {
-        player = GameObject.FindWithTag("Player");
-        pos = transform.position;
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        target = player.transform.position;
-        Vector2 force = speed * (target - pos);
-        iterate(force);
+        SetTargetToPlayer();
     }
 
-    void iterate(Vector2 f)
+    private void Update()
     {
-        acc = f;
-        vel += acc;
-        transform.Translate(vel);
+        dampTime = (2 / Vector2.Distance(target.position,transform.position));
+        pos = new Vector3(target.position.x, target.position.y,-10.0f);
+        transform.position = Vector3.SmoothDamp(gameObject.transform.position, pos, ref velocity, dampTime);
+    }
+
+    public void SetTargetToPlayer()
+    {
+        target = FindObjectOfType<PlayerController>().transform;
+    }
+
+    public void SetTargetToBall()
+    {
+        target = FindObjectOfType<BallController>().transform;
     }
 }

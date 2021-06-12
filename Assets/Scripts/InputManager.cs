@@ -28,6 +28,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             // temp
+            CameraController.instance.SetTargetToBall();
             ball.SetPoweredState(true);
             player.SetBallState(true);
 
@@ -36,6 +37,7 @@ public class InputManager : MonoBehaviour
         else
         {
             // temp
+            CameraController.instance.SetTargetToPlayer();
             ball.SetPoweredState(false);
             player.SetBallState(false);
 

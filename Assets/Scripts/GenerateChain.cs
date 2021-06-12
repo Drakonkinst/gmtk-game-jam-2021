@@ -30,7 +30,7 @@ public class GenerateChain : MonoBehaviour
         // Add chain links
         for (int i = 0; i < numSegments - 1; ++i)
         {
-            currPos -= new Vector2(0, linkSeparation);
+            currPos += new Vector2(0, linkSeparation);
             GameObject chainLink = Instantiate(chainObject, anchorTransform);
             chainLink.transform.position = currPos;
             joint.connectedBody = chainLink.GetComponent<Rigidbody2D>();
@@ -40,7 +40,7 @@ public class GenerateChain : MonoBehaviour
         }
 
         // Add ball
-        currPos -= new Vector2(0, ballSeparation);
+        currPos += new Vector2(0, ballSeparation);
         GameObject ballWeight = Instantiate(ballObject, anchorTransform);
         ballWeight.transform.position = currPos;
         joint.connectedBody = ballWeight.GetComponent<Rigidbody2D>();
@@ -54,6 +54,7 @@ public class GenerateChain : MonoBehaviour
     private void Start()
     {
         foreach(DistanceJoint2D joint in GetComponentsInChildren<DistanceJoint2D>()) {
+            joint.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0.1f, 0.0f));
             //Debug.Log("Found");
             //Debug.Log(joint.distance);
             //joint.autoConfigureDistance = false;
