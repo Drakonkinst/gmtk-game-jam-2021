@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - Ball
   - Slanted
+  - Enemy
   layers:
   - Default
   - TransparentFX

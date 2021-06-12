@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BreakableWall : MonoBehaviour
 {
-    public float breakForce = 25.0f;
+    public float breakForce = 10.0f;
     
     void OnCollisionEnter2D(Collision2D col)
     {

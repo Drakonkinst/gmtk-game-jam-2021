@@ -12,21 +12,28 @@ public class Groundable : MonoBehaviour
 
     private float radius;
     private bool isCircle = false;
+    private bool isCapsule = false;
 
     // Start is called before the first frame update
     protected virtual void Awake()
     {
         CircleCollider2D circle = GetComponent<CircleCollider2D>();
+        CapsuleCollider2D capsule = GetComponent<CapsuleCollider2D>();
         isCircle = circle != null;
+        isCapsule = capsule != null;
         if (isCircle)
         {
             radius = circle.bounds.extents.y;
+        }
+        else if(isCapsule)
+        {
+            radius = capsule.bounds.extents.y;
         }
     }
 
     public bool IsGrounded()
     {
-        if (isCircle)
+        if (isCircle || isCapsule)
         {
             Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius);
             RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, Vector2.down, groundThreshold);
@@ -49,7 +56,7 @@ public class Groundable : MonoBehaviour
 
     public bool IsOnFlatGround()
     {
-        if (isCircle)
+        if (isCircle || isCapsule)
         {
             Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius);
             RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, Vector2.down, groundThreshold);
