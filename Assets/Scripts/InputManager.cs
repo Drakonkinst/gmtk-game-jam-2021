@@ -7,10 +7,14 @@ public class InputManager : MonoBehaviour
     public static InputManager instance;
 
     public PlayerController player;
-    private PlayerStatus playerStatus;
+
+    [HideInInspector]
+    public Spell[] spells = new Spell[6];
 
     [HideInInspector]
     public BallController ball;
+
+    private PlayerStatus playerStatus;
 
     private void Awake()
     {
@@ -21,6 +25,9 @@ public class InputManager : MonoBehaviour
     {
         ball = FindObjectOfType<BallController>();
         playerStatus = PlayerStatus.instance;
+
+        // TODO: CREATE ABILITIES
+        spells[0] = new SpellHover().Unlock();
     }
 
     private void Update()
@@ -66,7 +73,8 @@ public class InputManager : MonoBehaviour
         {
             player.Jump();
         }
-        
+
+        DoAbilityInput();
     }
 
     private void DoBallInput()
@@ -90,6 +98,22 @@ public class InputManager : MonoBehaviour
         if(IsPressingRight())
         {
             ball.MoveRight();
+        }
+    }
+
+    private void DoAbilityInput()
+    {
+        for(int i = 0; i < spells.Length; ++i)
+        {
+            if(Input.GetKeyDown("" + (i + 1)))
+            {
+                Spell spell = spells[i];
+                if (spell != null && spell.isUnlocked && !spell.OnCooldown() && playerStatus.mana >= spell.manaCost)
+                {
+                    spell.Cast(ball);
+                    Debug.Log("Casting spell " + (i + 1));
+                }
+            }
         }
     }
 
