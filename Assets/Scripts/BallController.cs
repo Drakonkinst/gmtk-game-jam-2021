@@ -4,19 +4,34 @@ using UnityEngine;
 
 public class BallController : Groundable
 {
+    public enum State
+    {
+        Unpowered,
+        Controlled,
+        Hovering
+    }
+
+    
+
     private const float chainLengthBuffer = 0.5f;
     private const float distanceSlowingThreshold = 0.9f;
     private const float maxSlowing = 0.8f;
 
-    public bool isPowered = false;
     public float maxSpeed = 10.0f;
     public float velocityThresholdForDamage = 3.0f;
+
+
+    [HideInInspector]
+    public State currentState = State.Unpowered;
 
     private Rigidbody2D rb;
     private Transform myTransform;
     private Vector2 ballMovementDirection = Vector2.zero;
 
+    private State lastStateBeforeControlled = State.Unpowered;
+
     private bool lastOnGround = false;
+    private bool canHover = false;
 
     private void Start()
     {
@@ -28,14 +43,13 @@ public class BallController : Groundable
     {
         float chainLength = PlayerStatus.instance.chainLength - chainLengthBuffer;
         Vector2 playerPos = PlayerStatus.instance.GetPos();
-        //Vector2 ballToPlayer = GetPos() - playerPos;
         Vector2 ballToPlayer = PredictNextPosition(rb.velocity, Time.deltaTime) - playerPos;
         float dist = ballToPlayer.magnitude;
 
-        if (isPowered)
+        if (currentState == State.Controlled)
         {
             lastOnGround = false;
-            rb.bodyType = RigidbodyType2D.Dynamic;
+            //rb.bodyType = RigidbodyType2D.Dynamic;
             float distRatio = Mathf.Clamp01(dist / chainLength);
             float currentSpeed = maxSpeed;
 
@@ -43,7 +57,6 @@ public class BallController : Groundable
             if (distRatio > distanceSlowingThreshold)
             {
                 float speedMultiplier = 1.0f - ((distRatio - distanceSlowingThreshold) / (1.0f - distanceSlowingThreshold)) * maxSlowing;
-                //Debug.Log(speedMultiplier);
                 currentSpeed *= speedMultiplier;
             }
 
@@ -53,20 +66,17 @@ public class BallController : Groundable
             if (dist > chainLength)
             {
                 // Should modify velocity so it can do its own movement, do not set Transform
-                //Debug.Log("Using reset");
                 Vector2 newDirection = -ballToPlayer.normalized + rb.velocity.normalized;
                 rb.velocity = newDirection * currentSpeed;
             }
-            else
-            {
-                //Debug.Log("Using normal");
-            }
-            //Debug.Log("Final Velocity: " + rb.velocity);
         }
-        else
+        else if(currentState == State.Hovering)
+        {
+
+        }
+        else if(currentState == State.Unpowered)
         {
             bool onGround = IsGrounded();
-            //Debug.Log(onGround);
             if(onGround != lastOnGround)
             {
                 lastOnGround = onGround;
@@ -83,11 +93,6 @@ public class BallController : Groundable
             {
                 rb.bodyType = RigidbodyType2D.Dynamic;
             }
-            //if(dist > chainLength)
-            //{
-            //Vector2 newDirection = -ballToPlayer.normalized + rb.velocity.normalized;
-            //rb.velocity += newDirection * maxSpeed;
-            //}
         }
 
         if(IsOnFlatGround())
@@ -104,35 +109,94 @@ public class BallController : Groundable
     {
         if(IsGround(col.collider))
         {
+            if(currentState == State.Hovering)
+            {
+                return;
+            }
             CameraController.instance.GetComponent<CameraShake>().Shake();
         }
-        else if(!isPowered && rb.velocity.sqrMagnitude >= velocityThresholdForDamage * velocityThresholdForDamage)
+        else if(currentState == State.Unpowered && rb.velocity.sqrMagnitude >= velocityThresholdForDamage * velocityThresholdForDamage)
         {
             if(col.collider.tag == "Player")
             {
                 PlayerStatus.instance.Damage(30.0f);
             }
         }
-        //Debug.Log(rb.velocity.magnitude);
     }
 
-    public void SetPoweredState(bool flag)
+    public void SetState(State state)
     {
-        if (flag == isPowered)
+        if(state == currentState)
         {
             return;
         }
 
-        isPowered = flag;
-        rb.gravityScale = isPowered ? 0.0f : 1.0f;
 
-        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), PlayerStatus.instance.gameObject.GetComponent<Collider2D>(), isPowered);
-        if (isPowered)
+        Collider2D myCollider = GetComponent<Collider2D>();
+        Collider2D playerCollider = PlayerStatus.instance.GetComponent<Collider2D>();
+
+        // "Enter state" events
+        if (state == State.Controlled)
         {
+            rb.gravityScale = 0.0f;
+            Physics2D.IgnoreCollision(myCollider, playerCollider, true);
+            rb.bodyType = RigidbodyType2D.Dynamic;
         }
-        else
+        else if(state == State.Hovering)
         {
+            rb.gravityScale = 0.0f;
+            Physics2D.IgnoreCollision(myCollider, playerCollider, false);
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.velocity = new Vector2(0.0f, 0.0f);
+        }
+        else if(state == State.Unpowered)
+        {
+            rb.gravityScale = 1.0f;
+            Physics2D.IgnoreCollision(myCollider, playerCollider, false);
             rb.velocity = Vector2.zero;
+        }
+
+        currentState = state;
+
+        //Debug.Log("Set state to " + currentState.ToString());
+    }
+
+    public void SetPoweredState(bool flag)
+    {
+        if (flag && currentState != State.Controlled)
+        {
+            //Debug.Log("Saved last state as " + currentState.ToString());
+            lastStateBeforeControlled = currentState;
+            SetState(State.Controlled);
+        }
+        else if (!flag && currentState == State.Controlled)
+        {
+            if(lastStateBeforeControlled == State.Hovering && !canHover)
+            {
+                SetState(State.Unpowered);
+            }
+            else
+            {
+                SetState(lastStateBeforeControlled);
+            }
+            //Debug.Log("Restoring state as " + currentState.ToString());
+        }
+    }
+
+    public void SetHoveringFor(float duration)
+    {
+        canHover = true;
+        StartCoroutine(StopHovering(duration));
+    }
+
+    private IEnumerator StopHovering(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        canHover = false;
+        //Debug.Log(currentState.ToString());
+        if (currentState != BallController.State.Controlled)
+        {
+            SetState(BallController.State.Unpowered);
         }
     }
 
@@ -173,7 +237,7 @@ public class BallController : Groundable
 
     private void OnDrawGizmos()
     {
-        if (myTransform == null || !isPowered)
+        if (myTransform == null || currentState != State.Controlled)
         {
             return;
         }
