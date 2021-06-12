@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 249475216}
   m_Layer: 0
   m_Name: Ground (1)
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 579079923}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,6 +491,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2452877294502247232, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2452877294502247236, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -534,14 +538,6 @@ PrefabInstance:
     - target: {fileID: 2452877294502247236, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2452877294502247289, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
-      propertyPath: jumpForce
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 2452877294502247289, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
-      propertyPath: jumpCooldown
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 691dcf1012839e04b8f66125f7730576, type: 3}

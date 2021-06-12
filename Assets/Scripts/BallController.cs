@@ -23,21 +23,22 @@ public class BallController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float chainLength = PlayerStatus.instance.chainLength - chainLengthBuffer;
+        Vector2 playerPos = PlayerStatus.instance.GetPos();
+        //Vector2 ballToPlayer = GetPos() - playerPos;
+        Vector2 ballToPlayer = PredictNextPosition(rb.velocity, Time.deltaTime) - playerPos;
+        float dist = ballToPlayer.magnitude;
+
         if (isPowered)
         {
-            float chainLength = PlayerStatus.instance.chainLength - chainLengthBuffer;
-            Vector2 playerPos = PlayerStatus.instance.GetPos();
-            //Vector2 ballToPlayer = GetPos() - playerPos;
-            Vector2 ballToPlayer = PredictNextPosition(rb.velocity, Time.deltaTime) - playerPos;
-            float dist = ballToPlayer.magnitude;
             float distRatio = Mathf.Clamp01(dist / chainLength);
             float currentSpeed = maxSpeed;
 
             // Not sure if this actually does anything tbh
-            if(distRatio > distanceSlowingThreshold)
+            if (distRatio > distanceSlowingThreshold)
             {
                 float speedMultiplier = 1.0f - ((distRatio - distanceSlowingThreshold) / (1.0f - distanceSlowingThreshold)) * (1.0f - maxSlowing);
-                Debug.Log(speedMultiplier);
+                //Debug.Log(speedMultiplier);
                 currentSpeed *= speedMultiplier;
             }
 
@@ -51,6 +52,14 @@ public class BallController : MonoBehaviour
                 rb.velocity = newDirection * currentSpeed;
             }
         }
+        else
+        {
+            //if(dist > chainLength)
+            //{
+            //Vector2 newDirection = -ballToPlayer.normalized + rb.velocity.normalized;
+            //rb.velocity += newDirection * maxSpeed;
+            //}
+        }
     }
 
     public void SetPoweredState(bool flag)
@@ -63,7 +72,11 @@ public class BallController : MonoBehaviour
         isPowered = flag;
         rb.gravityScale = isPowered ? 0.0f : 1.0f;
 
-        if (!isPowered)
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), PlayerStatus.instance.gameObject.GetComponent<Collider2D>(), isPowered);
+        if (isPowered)
+        {
+        }
+        else
         {
             rb.velocity = Vector2.zero;
         }

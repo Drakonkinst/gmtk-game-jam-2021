@@ -54,6 +54,12 @@ public class InputManager : MonoBehaviour
         {
             player.MoveRight();
         }
+
+        // TODO: Cannot jump if weighed down by ball
+        if(IsPressingUp() && player.IsGrounded())
+        {
+            player.Jump();
+        }
     }
 
     private void DoBallInput()

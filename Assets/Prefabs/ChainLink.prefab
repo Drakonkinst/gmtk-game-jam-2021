@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7294173214548165544}
   - component: {fileID: 3352965600040130601}
   - component: {fileID: 8876558828835298999}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ChainLink
-  m_TagString: Untagged
+  m_TagString: Chain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
