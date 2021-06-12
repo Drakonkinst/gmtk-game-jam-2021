@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Spell
 {
     public bool isUnlocked = false;
     public float cooldown;
     public float manaCost;
+    public Image icon;
 
     private float nextEnable = 0.0f;
 
@@ -19,7 +21,7 @@ public abstract class Spell
     public void Cast(BallController ball)
     {
         float currentTime = Time.time;
-        if(currentTime >= nextEnable)
+        if (currentTime >= nextEnable)
         {
             Execute(ball);
             PlayerStatus.instance.RemoveMana(manaCost);

@@ -25,6 +25,7 @@ public class SmoothUIBar : MonoBehaviour
         bar = GetComponent<RectTransform>();
         barWidth = transform.parent.GetComponent<RectTransform>().sizeDelta.x;
         originalPosition = myTransform.position;
+        SetActualPercent(1.0f);
     }
 
     private void Update()

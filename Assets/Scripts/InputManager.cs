@@ -28,6 +28,10 @@ public class InputManager : MonoBehaviour
 
         // TODO: CREATE ABILITIES
         spells[0] = new SpellHover().Unlock();
+
+        // Attach to icons
+        HUD.instance.SetSpells(spells);
+        HUD.instance.UpdateSpellsUnlocked();
     }
 
     private void Update()
