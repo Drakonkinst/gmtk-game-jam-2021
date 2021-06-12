@@ -136,3 +136,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPowered: 0
   maxSpeed: 10
+  velocityThresholdForDamage: 3

@@ -34,7 +34,7 @@ public class Groundable : MonoBehaviour
             bool hitGround = false;
             foreach (RaycastHit2D hit in hits)
             {
-                if (IsGround(hit))
+                if (IsGround(hit.collider))
                 {
                     hitGround = true;
                 }
@@ -57,7 +57,7 @@ public class Groundable : MonoBehaviour
             bool hitGround = false;
             foreach (RaycastHit2D hit in hits)
             {
-                if (IsFlatPlatform(hit))
+                if (IsFlatPlatform(hit.collider))
                 {
                     hitGround = true;
                 }
@@ -71,18 +71,18 @@ public class Groundable : MonoBehaviour
 
     }
 
-    private bool IsGround(RaycastHit2D hit)
+    public bool IsGround(Collider2D collider)
     {
         bool sourceIsBall = GetComponent<Collider2D>().tag == ballTag;
-        return hit.collider != null
-            && (hit.collider.tag == platformTag
-             || hit.collider.tag == slantedPlatformTag
-             || (!sourceIsBall && hit.collider.tag == ballTag));
+        return collider != null
+            && (collider.tag == platformTag
+             || collider.tag == slantedPlatformTag
+             || (!sourceIsBall && collider.tag == ballTag));
     }
 
-    private bool IsFlatPlatform(RaycastHit2D hit)
+    public bool IsFlatPlatform(Collider2D collider)
     {
-        return hit.collider != null && (hit.collider.tag == platformTag);
+        return collider != null && (collider.tag == platformTag);
 
     }
 

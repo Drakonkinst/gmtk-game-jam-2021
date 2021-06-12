@@ -10,6 +10,7 @@ public class BallController : Groundable
 
     public bool isPowered = false;
     public float maxSpeed = 10.0f;
+    public float velocityThresholdForDamage = 3.0f;
 
     private Rigidbody2D rb;
     private Transform myTransform;
@@ -97,7 +98,22 @@ public class BallController : Groundable
         {
             GetComponent<SpriteRenderer>().color = Color.black;
         }
+    }
 
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if(IsGround(col.collider))
+        {
+            CameraController.instance.GetComponent<CameraShake>().Shake();
+        }
+        else if(!isPowered && rb.velocity.sqrMagnitude >= velocityThresholdForDamage * velocityThresholdForDamage)
+        {
+            if(col.collider.tag == "Player")
+            {
+                Debug.Log("Ow");
+            }
+        }
+        //Debug.Log(rb.velocity.magnitude);
     }
 
     public void SetPoweredState(bool flag)

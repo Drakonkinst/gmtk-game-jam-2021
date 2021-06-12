@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2452877294502247290}
   - component: {fileID: 2452877294502247289}
   - component: {fileID: 7919984021419539263}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: -0.75}
   m_AutoConfigureDistance: 1
-  m_Distance: 3.13
+  m_Distance: 4.63
   m_MaxDistanceOnly: 0
 --- !u!114 &2452877294502247290
 MonoBehaviour:
