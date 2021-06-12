@@ -21,8 +21,7 @@ public class InputManager : MonoBehaviour
         ball = FindObjectOfType<BallController>();
     }
 
-    // Update is called once per frame
-    private void FixedUpdate()
+    private void Update()
     {
         player.ResetPlayerMovement();
         if (Input.GetKey(KeyCode.LeftShift) && player.IsGrounded())
@@ -57,8 +56,9 @@ public class InputManager : MonoBehaviour
             player.MoveRight();
         }
 
-        // TODO: Cannot jump if weighed down by ball
-        if(IsPressingUp() && player.IsGrounded())
+        // TODO: Cannot jump if weighed down by ball--this might already be accomplished?
+        
+        if(PressedUp() && player.IsGrounded())
         {
             player.Jump();
         }
@@ -106,6 +106,11 @@ public class InputManager : MonoBehaviour
     private bool IsPressingDown()
     {
         return Input.GetKey(KeyCode.DownArrow) || Input.GetKey("s");
+    }
+
+    public bool PressedUp()
+    {
+        return Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("w") || Input.GetKeyDown(KeyCode.Space);
     }
 
 

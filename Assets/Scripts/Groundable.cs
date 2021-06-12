@@ -82,7 +82,7 @@ public class Groundable : MonoBehaviour
 
     private bool IsFlatPlatform(RaycastHit2D hit)
     {
-        return hit.collider != null && (hit.collider.tag == slantedPlatformTag);
+        return hit.collider != null && (hit.collider.tag == platformTag);
 
     }
 

@@ -89,6 +89,15 @@ public class BallController : Groundable
             //}
         }
 
+        if(IsOnFlatGround())
+        {
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().color = Color.black;
+        }
+
     }
 
     public void SetPoweredState(bool flag)

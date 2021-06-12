@@ -44,7 +44,15 @@ public class PlayerController : Groundable
         }
 
         //Debug.Log(IsGrounded());*/
-    }
+        if(IsGrounded())
+        {
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().color = Color.black;
+        }
+}
 
     public void SetBallState(bool flag)
     {

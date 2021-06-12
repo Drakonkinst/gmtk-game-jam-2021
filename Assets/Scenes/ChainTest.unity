@@ -498,7 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camTransform: {fileID: 1512121845}
   shakeDuration: 0
-  shakeAmount: 0.2
+  shakeAmount: 0.1
   decreaseFactor: 1
 --- !u!114 &1694452066 stripped
 MonoBehaviour:
@@ -569,10 +569,6 @@ PrefabInstance:
     - target: {fileID: 2452877294502247236, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2452877294502247290, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
-      propertyPath: numSegments
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2452877294502247291, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
       propertyPath: m_Distance
