@@ -15,6 +15,8 @@ public class BallController : Groundable
     private Transform myTransform;
     private Vector2 ballMovementDirection = Vector2.zero;
 
+    private bool lastOnGround = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -31,6 +33,7 @@ public class BallController : Groundable
 
         if (isPowered)
         {
+            lastOnGround = false;
             rb.bodyType = RigidbodyType2D.Dynamic;
             float distRatio = Mathf.Clamp01(dist / chainLength);
             float currentSpeed = maxSpeed;
@@ -61,7 +64,18 @@ public class BallController : Groundable
         }
         else
         {
-            if(IsGrounded())
+            bool onGround = IsGrounded();
+            //Debug.Log(onGround);
+            if(onGround != lastOnGround)
+            {
+                lastOnGround = onGround;
+                if(onGround)
+                {
+                    CameraController.instance.GetComponent<CameraShake>().Shake();
+                }
+            }
+
+            if(IsOnFlatGround())
             {
                 rb.bodyType = RigidbodyType2D.Static;
             } else

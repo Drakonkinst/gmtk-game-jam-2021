@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 1512121845}
   - component: {fileID: 1512121844}
   - component: {fileID: 1512121843}
+  - component: {fileID: 1512121847}
   - component: {fileID: 1512121846}
   m_Layer: 0
   m_Name: Main Camera
@@ -479,10 +480,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1512121842}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e9867bbe456e4458592d0038027c4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 7852b65d742036647bfb171b85d5a249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dampTime: 0.5
+--- !u!114 &1512121847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512121842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2faf3076435473408cfb46796d03c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 1512121845}
+  shakeDuration: 0
+  shakeAmount: 0.2
+  decreaseFactor: 1
 --- !u!114 &1694452066 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2452877294502247289, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
@@ -552,6 +569,14 @@ PrefabInstance:
     - target: {fileID: 2452877294502247236, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452877294502247290, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
+      propertyPath: numSegments
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452877294502247291, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
+      propertyPath: m_Distance
+      value: 4.63
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
