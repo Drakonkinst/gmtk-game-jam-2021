@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2452877294502247291}
   - component: {fileID: 2452877294502247290}
   - component: {fileID: 2452877294502247289}
+  - component: {fileID: 7919984021419539263}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -141,7 +142,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0.75}
   m_AutoConfigureDistance: 1
-  m_Distance: 3.88
+  m_Distance: 3.13
   m_MaxDistanceOnly: 0
 --- !u!114 &2452877294502247290
 MonoBehaviour:
@@ -157,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballObject: {fileID: 3672112918491148867, guid: ffe802a0e08a69c4ebb618e5abba2149, type: 3}
   chainObject: {fileID: 1194750912403100807, guid: 311c9a10101229f4e8c17f7a291bf768, type: 3}
+  numSegments: 5
   chainLength: 5
 --- !u!114 &2452877294502247289
 MonoBehaviour:
@@ -173,3 +175,19 @@ MonoBehaviour:
   moveSpeed: 5
   jumpForce: 5
   jumpCooldown: 10
+  ballStateMass: 20
+--- !u!114 &7919984021419539263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2452877294502247232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6328cddb17709a45830064a5209f8de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  mana: 100
+  chainLength: 0
