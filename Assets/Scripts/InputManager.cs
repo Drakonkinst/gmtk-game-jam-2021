@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     public static InputManager instance;
 
     public PlayerController player;
+    private PlayerStatus playerStatus;
 
     [HideInInspector]
     public BallController ball;
@@ -19,17 +20,19 @@ public class InputManager : MonoBehaviour
     private void Start()
     {
         ball = FindObjectOfType<BallController>();
+        playerStatus = PlayerStatus.instance;
     }
 
     private void Update()
     {
         player.ResetPlayerMovement();
-        if (Input.GetKey(KeyCode.LeftShift) && player.IsGrounded())
+        if (Input.GetKey(KeyCode.LeftShift) && player.IsGrounded() && playerStatus.mana > 0.0f)
         {
             // temp
             CameraController.instance.SetTargetToBall();
             ball.SetPoweredState(true);
             player.SetBallState(true);
+            playerStatus.SetState(PlayerStatus.State.MovingBall);
 
             DoBallInput();
         }
@@ -46,6 +49,7 @@ public class InputManager : MonoBehaviour
 
     private void DoPlayerInput()
     {
+
         if (IsPressingLeft())
         {
             player.MoveLeft();
@@ -57,11 +61,12 @@ public class InputManager : MonoBehaviour
         }
 
         // TODO: Cannot jump if weighed down by ball--this might already be accomplished?
-        
-        if(PressedUp() && player.IsGrounded())
+        bool isGrounded = player.IsGrounded();
+        if(PressedUp() && isGrounded)
         {
             player.Jump();
         }
+        
     }
 
     private void DoBallInput()

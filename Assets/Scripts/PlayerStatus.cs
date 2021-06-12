@@ -7,22 +7,144 @@ public class PlayerStatus : MonoBehaviour
 {
     public static PlayerStatus instance;
 
+    public enum State
+    {
+        Idle,
+        Moving,
+        Jumping,
+        MovingBall
+    }
+
+    [HideInInspector]
+    public State currentState = State.Idle;
+
     public float health = 100.0f;
-    public float mana = 100.0f;
+    public float mana = 300.0f;
+    public SmoothUIBar healthBarDisplay;
+    public SmoothUIBar manaBarDisplay;
+    public float healthBarShakeThreshold = 20.0f;
+
+    public float delayToStartManaRegen = 1.5f;
+    public float manaRegenPerTick = 1.0f;
+    public float manaTick = 0.01f;
+    public float updateTick = 0.01f;
+
+    public bool infiniteMana = false;
+
+    private float maxHealth;
+    private float maxMana;
+    private float nextManaRegenEnable = -1.0f;
 
     [HideInInspector]
     public float chainLength = -1.0f;
 
-    [HideInInspector]
+    private Dictionary<string, float> eventToDamageValue = new Dictionary<string, float>()
+    {
+        { "MovingBall", 1.0f }
+    };
 
     private void Awake()
     {
         instance = this;
+        maxHealth = health;
+        maxMana = mana;
     }
 
     private void Start()
     {
         chainLength = GetComponent<GenerateChain>().chainLength;
+        StartCoroutine(DoUpdate());
+        StartCoroutine(RegenerateMana());
+    }
+
+    public void SetState(State state)
+    {
+        currentState = state;
+        // TODO: set sprite as necessary
+    }
+
+    public void Damage(float amount)
+    {
+        if(amount > healthBarShakeThreshold)
+        {
+            healthBarDisplay.Shake();
+        }
+        Heal(-amount);
+    }
+
+    public void Heal(float amount)
+    {
+        SetHealth(health + amount);
+    }
+
+    public void SetHealth(float amount)
+    {
+        health = Mathf.Clamp(amount, 0.0f, maxHealth);
+        if(Mathf.Approximately(health, 0.0f))
+        {
+            // Player is dead
+        }
+        healthBarDisplay.SetPercent(health / maxHealth);
+    }
+
+    public void AddMana(float amount)
+    {
+        SetMana(mana + amount);
+    }
+
+    public void RemoveMana(float amount)
+    {
+        if(infiniteMana)
+        {
+            return;
+        }
+
+        AddMana(-amount);
+        nextManaRegenEnable = Time.time + delayToStartManaRegen;
+    }
+
+    public void RemoveMana(string eventString)
+    {
+        if(!eventToDamageValue.ContainsKey(eventString))
+        {
+            Debug.Log("Invalid event: " + eventString);
+            return;
+        }
+
+        RemoveMana(eventToDamageValue[eventString]);
+    }
+
+    public void SetMana(float amount)
+    {
+        mana = Mathf.Clamp(amount, 0.0f, maxMana);
+        manaBarDisplay.SetPercent(mana / maxMana);
+    }
+
+    private IEnumerator RegenerateMana()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(manaTick);
+
+            float currTime = Time.time;
+            if(currTime > nextManaRegenEnable)
+            {
+                AddMana(manaRegenPerTick);
+            }
+        }
+    }
+
+    private IEnumerator DoUpdate()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(updateTick);
+
+            if (currentState == State.MovingBall)
+            {
+                RemoveMana("MovingBall");
+            }
+        }
     }
 
     public Vector2 GetPos()

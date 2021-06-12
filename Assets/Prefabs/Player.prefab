@@ -176,6 +176,7 @@ MonoBehaviour:
   jumpForce: 500
   jumpCooldown: 10
   ballStateMass: 20
+  playerXMovement: 0
 --- !u!114 &7919984021419539263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +189,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6328cddb17709a45830064a5209f8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   health: 100
-  mana: 100
+  mana: 500
+  healthBarDisplay: {fileID: 0}
+  manaBarDisplay: {fileID: 0}
+  healthBarShakeThreshold: 20
+  delayToStartManaRegen: 1.5
+  manaRegenPerTick: 1
+  manaTick: 0.01
+  updateTick: 0.01
+  infiniteMana: 0
   chainLength: 0

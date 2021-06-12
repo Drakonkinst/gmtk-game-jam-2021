@@ -110,7 +110,7 @@ public class BallController : Groundable
         {
             if(col.collider.tag == "Player")
             {
-                Debug.Log("Ow");
+                PlayerStatus.instance.Damage(30.0f);
             }
         }
         //Debug.Log(rb.velocity.magnitude);

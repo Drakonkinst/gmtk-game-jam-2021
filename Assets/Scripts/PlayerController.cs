@@ -10,13 +10,16 @@ public class PlayerController : Groundable
     
     public float ballStateMass = 20.0f;
 
+    [HideInInspector]
+    public float playerXMovement = 0.0f;
+
     private Rigidbody2D rb;
     private float xIn, yIn;
     private float nextJump;
     private float time = 0.0f;
-    private float playerXMovement = 0.0f;
     private float defaultMass = 1.0f;
     private Transform myTransform;
+    private PlayerStatus playerStatus;
 
     protected override void Awake()
     {
@@ -27,6 +30,7 @@ public class PlayerController : Groundable
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerStatus = PlayerStatus.instance;
         defaultMass = rb.mass;
     }
 
@@ -44,7 +48,26 @@ public class PlayerController : Groundable
         }
 
         //Debug.Log(IsGrounded());*/
-        if(IsGrounded())
+
+        bool isGrounded = IsGrounded();
+
+        if (isGrounded)
+        {
+            if (Mathf.Approximately(playerXMovement, 0.0f))
+            {
+                playerStatus.SetState(PlayerStatus.State.Idle);
+            }
+            else
+            {
+                playerStatus.SetState(PlayerStatus.State.Moving);
+            }
+        }
+        else
+        {
+            playerStatus.SetState(PlayerStatus.State.Jumping);
+        }
+
+        if (isGrounded)
         {
             GetComponent<SpriteRenderer>().color = Color.white;
         }
