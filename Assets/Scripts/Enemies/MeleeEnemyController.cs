@@ -13,7 +13,13 @@ public class MeleeEnemyController : EnemyController
     //private int behaviorState = 0; // 0 inactive, 1 chasing, 2 lunging
     protected override void Update()
     {
+        if(!IsGrounded())
+        {
+            return;
+        }
+
         base.Update();
+
         if (base.dist <= lungeRange) // Player entered lunging range
         {
             if(base.time > nextLunge)

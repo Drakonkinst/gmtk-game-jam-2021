@@ -17,8 +17,14 @@ public class RangedEnemyController : EnemyController
     // Update is called once per frame
     protected override void Update()
     {
+        if (!IsGrounded())
+        {
+            return;
+        }
+
         base.Update();
-        if(base.dist <= fleeRange)
+
+        if (base.dist <= fleeRange)
         {
             base.rb.velocity = new Vector2(-base.dir * fleeSpeed, base.rb.velocity.y);
         }

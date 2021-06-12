@@ -37,6 +37,7 @@ public class Groundable : MonoBehaviour
         {
             Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius);
             RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, Vector2.down, groundThreshold);
+            Debug.DrawRay(transform.position, Vector2.down * (radius + groundThreshold), Color.yellow, 10.0f);
 
             bool hitGround = false;
             foreach (RaycastHit2D hit in hits)
