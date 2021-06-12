@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallController : MonoBehaviour
+public class BallController : Groundable
 {
     private const float chainLengthBuffer = 0.5f;
-    private const float distanceSlowingThreshold = 0.7f;
+    private const float distanceSlowingThreshold = 0.9f;
     private const float maxSlowing = 0.8f;
 
     public bool isPowered = false;
@@ -31,13 +31,14 @@ public class BallController : MonoBehaviour
 
         if (isPowered)
         {
+            rb.bodyType = RigidbodyType2D.Dynamic;
             float distRatio = Mathf.Clamp01(dist / chainLength);
             float currentSpeed = maxSpeed;
 
             // Not sure if this actually does anything tbh
             if (distRatio > distanceSlowingThreshold)
             {
-                float speedMultiplier = 1.0f - ((distRatio - distanceSlowingThreshold) / (1.0f - distanceSlowingThreshold)) * (1.0f - maxSlowing);
+                float speedMultiplier = 1.0f - ((distRatio - distanceSlowingThreshold) / (1.0f - distanceSlowingThreshold)) * maxSlowing;
                 //Debug.Log(speedMultiplier);
                 currentSpeed *= speedMultiplier;
             }
@@ -48,18 +49,25 @@ public class BallController : MonoBehaviour
             if (dist > chainLength)
             {
                 // Should modify velocity so it can do its own movement, do not set Transform
-                Debug.Log("Using reset");
+                //Debug.Log("Using reset");
                 Vector2 newDirection = -ballToPlayer.normalized + rb.velocity.normalized;
                 rb.velocity = newDirection * currentSpeed;
             }
             else
             {
-                Debug.Log("Using normal");
+                //Debug.Log("Using normal");
             }
-            Debug.Log("Final Velocity: " + rb.velocity);
+            //Debug.Log("Final Velocity: " + rb.velocity);
         }
         else
         {
+            if(IsGrounded())
+            {
+                rb.bodyType = RigidbodyType2D.Static;
+            } else
+            {
+                rb.bodyType = RigidbodyType2D.Dynamic;
+            }
             //if(dist > chainLength)
             //{
             //Vector2 newDirection = -ballToPlayer.normalized + rb.velocity.normalized;

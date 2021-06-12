@@ -25,7 +25,7 @@ public class InputManager : MonoBehaviour
     private void FixedUpdate()
     {
         player.ResetPlayerMovement();
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && player.IsGrounded())
         {
             // temp
             CameraController.instance.SetTargetToBall();

@@ -2,10 +2,8 @@ using System;
 using System.Collections.Specialized;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Groundable
 {
-    private const float groundThreshold = 0.1f;
-
     public float moveSpeed = 1.0f;
     public float jumpForce = 5.0f;
     public float jumpCooldown = 10.0f;
@@ -19,12 +17,11 @@ public class PlayerController : MonoBehaviour
     private float playerXMovement = 0.0f;
     private float defaultMass = 1.0f;
     private Transform myTransform;
-    private float radius;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         myTransform = transform;
-        radius = GetComponent<Collider2D>().bounds.extents.y;
     }
 
     private void Start()
@@ -86,20 +83,9 @@ public class PlayerController : MonoBehaviour
         return myTransform.position;
     }
 
-    public bool IsGrounded()
+    public Vector2 GetVelocity()
     {
-        Debug.DrawRay(myTransform.position, Vector2.down * (radius + groundThreshold), Color.yellow, 10.0f);
-        RaycastHit2D hit = Physics2D.Raycast(myTransform.position, Vector2.down, radius + groundThreshold);
-
-        if(hit.collider != null && hit.collider.tag == "Platform")
-        {
-            return true;
-        }
-        if(hit.collider != null)
-        {
-            //Debug.Log(hit.collider.tag);
-        }
-        return false;
+        return rb.velocity;
     }
 
 }
