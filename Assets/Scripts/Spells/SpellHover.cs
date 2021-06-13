@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class SpellHover : Spell
 {
-    private const float duration = 5.0f;
-    public SpellHover() : base(duration, 100.0f)
+    private const float spellCooldown = 5.0f;
+    private const float spellManaCost = 100.0f;
+
+    public SpellHover() : base(spellCooldown, spellManaCost)
     {
         
     }
@@ -13,6 +15,7 @@ public class SpellHover : Spell
     protected override void Execute(BallController ball)
     {
         ball.SetState(BallController.State.Hovering);
-        ball.SetHoveringFor(duration);
+        // duration == cooldown
+        ball.SetHoveringFor(spellCooldown);
     }
 }

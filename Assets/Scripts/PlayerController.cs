@@ -7,7 +7,8 @@ public class PlayerController : Groundable
     public float moveSpeed = 1.0f;
     public float jumpForce = 5.0f;
     public float jumpCooldown = 10.0f;
-    
+    public float responsiveness = 1.0f;
+
     public float ballStateMass = 20.0f;
 
     [HideInInspector]
@@ -16,10 +17,10 @@ public class PlayerController : Groundable
     private Rigidbody2D rb;
     private float xIn, yIn;
     private float nextJump;
-    private float time = 0.0f;
     private float defaultMass = 1.0f;
     private Transform myTransform;
     private PlayerStatus playerStatus;
+    private float prevXMovement = 0.0f;
 
     protected override void Awake()
     {
@@ -36,18 +37,11 @@ public class PlayerController : Groundable
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(playerXMovement, rb.velocity.y);
-        time = time + Time.deltaTime;
+        Vector2 targetVelocity = new Vector2(playerXMovement, 0.0f);
+        Vector2 currentVelocity = new Vector2(prevXMovement, 0.0f);
+        rb.AddForce((targetVelocity - new Vector2(rb.velocity.x, 0.0f)) * responsiveness);
 
-        /*// TODO: Can't jump if held down by ball
-        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-        {
-            nextJump = time + jumpCooldown;
-            //rb.velocity += new Vector2(0.0f, jumpForce);
-            Jump();
-        }
-
-        //Debug.Log(IsGrounded());*/
+        // TODO: Can't jump if held down by ball--this might be done for us
 
         bool isGrounded = IsGrounded();
 

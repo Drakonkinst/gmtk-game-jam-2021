@@ -10,9 +10,13 @@ public class HUD : MonoBehaviour
     public SmoothUIBar healthBarDisplay;
     public SmoothUIBar manaBarDisplay;
     public Image[] spellIcons;
+    public Text spellResultText;
+
+    public float maxSpellResultDisplayTime = 3.0f;
 
     private Spell[] spells;
     private int numSpells = 0;
+    private float spellResultDisplayTime = 0.0f;
 
     private void Awake()
     {
@@ -54,6 +58,34 @@ public class HUD : MonoBehaviour
             }
             //Debug.Log(icon.fillAmount);
         }
+
+        FadeSpellResultText();
+    }
+
+    private void FadeSpellResultText()
+    {
+        if(spellResultDisplayTime <= 0.0f)
+        {
+            spellResultDisplayTime = 0.0f;
+            return;
+        }
+
+        spellResultDisplayTime -= Time.deltaTime;
+        float percent = spellResultDisplayTime / maxSpellResultDisplayTime;
+        SetSpellResultTextOpacity(percent);
+    }
+
+    private void SetSpellResultTextOpacity(float opacity)
+    {
+        Color color = spellResultText.color;
+        color.a = opacity;
+        spellResultText.color = color;
+    }
+
+    public void SetSpellResultText(string text)
+    {
+        spellResultText.text = text;
+        spellResultDisplayTime = maxSpellResultDisplayTime;
     }
 
     // Call this whenever a new spell is unlocked

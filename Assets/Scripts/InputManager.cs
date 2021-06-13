@@ -26,8 +26,11 @@ public class InputManager : MonoBehaviour
         ball = FindObjectOfType<BallController>();
         playerStatus = PlayerStatus.instance;
 
-        // TODO: CREATE ABILITIES
         spells[0] = new SpellHover().Unlock();
+        spells[1] = new SpellShoot().Unlock();
+        spells[2] = new SpellEnflame().Unlock();
+        spells[3] = new SpellAttract().Unlock();
+        spells[4] = new SpellRepel().Unlock();
 
         // Attach to icons
         HUD.instance.SetSpells(spells);
@@ -37,7 +40,20 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         player.ResetPlayerMovement();
-        if (Input.GetKey(KeyCode.LeftShift) && player.IsGrounded() && playerStatus.mana > 0.0f)
+        bool pressingShift = Input.GetKey(KeyCode.LeftShift);
+        bool isGrounded = player.IsGrounded();
+        bool enoughMana = playerStatus.mana > 0.0f;
+
+        if(pressingShift && !isGrounded)
+        {
+            HUD.instance.SetSpellResultText("Must be on the ground!");
+        }
+        else if(pressingShift && !enoughMana)
+        {
+            HUD.instance.SetSpellResultText("Not enough mana!");
+        }
+
+        if (pressingShift && isGrounded && enoughMana)
         {
             // temp
             CameraController.instance.SetTargetToBall();
@@ -56,6 +72,7 @@ public class InputManager : MonoBehaviour
 
             DoPlayerInput();
         }
+        DoAbilityInput();
     }
 
     private void DoPlayerInput()
@@ -71,14 +88,12 @@ public class InputManager : MonoBehaviour
             player.MoveRight();
         }
 
-        // TODO: Cannot jump if weighed down by ball--this might already be accomplished?
         bool isGrounded = player.IsGrounded();
         if(PressedUp() && isGrounded)
         {
             player.Jump();
         }
 
-        DoAbilityInput();
     }
 
     private void DoBallInput()
@@ -112,10 +127,10 @@ public class InputManager : MonoBehaviour
             if(Input.GetKeyDown("" + (i + 1)))
             {
                 Spell spell = spells[i];
-                if (spell != null && spell.isUnlocked && !spell.OnCooldown() && playerStatus.mana >= spell.manaCost)
+                if (spell != null && spell.isUnlocked)
                 {
                     spell.Cast(ball);
-                    Debug.Log("Casting spell " + (i + 1));
+                    Debug.Log("Attempting to cast spell " + (i + 1));
                 }
             }
         }

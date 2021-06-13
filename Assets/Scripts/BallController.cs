@@ -14,6 +14,8 @@ public class BallController : Groundable
     private const float chainLengthBuffer = 0.5f;
     private const float distanceSlowingThreshold = 0.9f;
     private const float maxSlowing = 0.8f;
+    private const float burningTick = 0.5f;
+    private const float burningThreshold = 0.1f;
 
     public float maxSpeed = 10.0f;
     public float velocityThresholdForPlayerDamage = 8.0f;
@@ -22,6 +24,9 @@ public class BallController : Groundable
 
     [HideInInspector]
     public State currentState = State.Unpowered;
+    
+    [HideInInspector]
+    public float ballRadius;
 
     private Rigidbody2D rb;
     private Transform myTransform;
@@ -31,13 +36,16 @@ public class BallController : Groundable
 
     private bool lastOnGround = false;
     private bool canHover = false;
-    private float ballRadius;
+    private bool isBurning = false;
+    private float burningDamageToPlayer;
+    private float burningDamageToEnemy;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         myTransform = transform;
         ballRadius = GetComponent<Collider2D>().bounds.extents.y;
+        StartCoroutine(DoBurning());
     }
 
     private void FixedUpdate()
@@ -219,6 +227,95 @@ public class BallController : Groundable
         {
             SetState(BallController.State.Unpowered);
         }
+    }
+
+    public void SetBurningFor(float duration, float damageToPlayer, float damageToEnemy)
+    {
+        isBurning = true;
+        burningDamageToPlayer = damageToPlayer;
+        burningDamageToEnemy = damageToEnemy;
+        StartCoroutine(StopBurning(duration));
+    }
+
+    private IEnumerator StopBurning(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        isBurning = false;
+    }
+
+    private IEnumerator DoBurning()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(burningTick);
+            if(isBurning)
+            {
+                List<Collider2D> touching = new List<Collider2D>();
+                int numFound = Physics2D.OverlapCircle(myTransform.position, ballRadius + burningThreshold, cf.NoFilter(), touching);
+
+                foreach(Collider2D hit in touching)
+                {
+                    if(hit.tag == "Player")
+                    {
+                        PlayerStatus.instance.Damage(burningDamageToPlayer);
+                    }
+                    else if(hit.tag == "Enemy")
+                    {
+                        hit.GetComponent<EnemyController>().receiveDamage(burningDamageToEnemy);
+                    }
+                    Debug.Log("Damaged " + hit.tag);
+                }
+            }
+        }
+    }
+
+    public void Attract(float range, float force, float delay)
+    {
+        StartCoroutine(DoAttract(range, force, delay));
+    }
+
+    private IEnumerator DoAttract(float range, float force, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        List<Collider2D> touching = new List<Collider2D>();
+        Vector2 pos = myTransform.position;
+        int numFound = Physics2D.OverlapCircle(pos, ballRadius + range, cf.NoFilter(), touching);
+
+        foreach (Collider2D hit in touching)
+        {
+            if (hit.tag == "Player" || hit.tag == "Enemy")
+            {
+                Vector2 forceDir = (pos - (Vector2)hit.transform.position);
+                hit.GetComponent<Rigidbody2D>().AddForce(forceDir.normalized * force + Vector2.up * (force / 5.0f), ForceMode2D.Impulse);
+            }
+        }
+    }
+
+    public void Repel(float range, float force, float delay)
+    {
+        StartCoroutine(DoRepel(range, force, delay));
+    }
+
+    private IEnumerator DoRepel(float range, float force, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        List<Collider2D> touching = new List<Collider2D>();
+        Vector2 pos = myTransform.position;
+        int numFound = Physics2D.OverlapCircle(pos, ballRadius + range, cf.NoFilter(), touching);
+
+        foreach (Collider2D hit in touching)
+        {
+            if (hit.tag == "Player" || hit.tag == "Enemy")
+            {
+                Vector2 forceDir = ((Vector2)hit.transform.position - pos);
+                hit.GetComponent<Rigidbody2D>().AddForce(forceDir.normalized * force + Vector2.up * (force / 5.0f), ForceMode2D.Impulse);
+            }
+        }
+    }
+
+    public void ShootBall(Vector2 dir, float force)
+    {
+        rb.AddForce(dir * force, ForceMode2D.Impulse);
     }
 
     private Vector2 PredictNextPosition(Vector2 velocity, float delay)

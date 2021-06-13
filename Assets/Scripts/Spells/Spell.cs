@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class Spell
 {
     public bool isUnlocked = false;
     public float cooldown;
     public float manaCost;
-    public Image icon;
 
+    protected ContactFilter2D cf;
     private float nextEnable = 0.0f;
 
     public Spell(float cooldown, float manaCost)
@@ -20,6 +19,18 @@ public abstract class Spell
 
     public void Cast(BallController ball)
     {
+        if (OnCooldown())
+        {
+            SetResultText("Spell is on cooldown!");
+            return;
+        }
+
+        if(PlayerStatus.instance.mana < manaCost)
+        {
+            SetResultText("Not enough mana!");
+            return;
+        }
+
         float currentTime = Time.time;
         if (currentTime >= nextEnable)
         {
@@ -30,6 +41,11 @@ public abstract class Spell
     }
 
     protected abstract void Execute(BallController ball);
+
+    protected void SetResultText(string text)
+    {
+        HUD.instance.SetSpellResultText(text);
+    }
 
     public Spell Unlock()
     {

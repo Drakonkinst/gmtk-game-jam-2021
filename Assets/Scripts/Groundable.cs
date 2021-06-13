@@ -14,7 +14,7 @@ public class Groundable : MonoBehaviour
     private float radius;
     private bool isCircle = false;
     private bool isCapsule = false;
-    private ContactFilter2D cf;
+    protected ContactFilter2D cf;
 
     // Start is called before the first frame update
     protected virtual void Awake()
