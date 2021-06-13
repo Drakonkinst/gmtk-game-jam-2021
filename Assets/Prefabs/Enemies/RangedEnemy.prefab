@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5379162904638756303}
   m_Layer: 0
   m_Name: RangedEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,6 +136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   damage: 1
+  bullet: {fileID: 6667810702326207275, guid: 4d3d236ca503a454cafeb3650748d7d1, type: 3}
+  bullets: {fileID: 4791309068836296364, guid: a0d7c1e4472f90745927e52092f5b152, type: 3}
   approachRange: 30
   shootingRange: 20
   fleeRange: 10

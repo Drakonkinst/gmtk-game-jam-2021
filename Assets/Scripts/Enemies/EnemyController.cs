@@ -20,7 +20,7 @@ public class EnemyController : Groundable
 
     protected virtual void Update()
     {
-        Debug.Log("Distance: " + dist);
+        //Debug.Log("Distance: " + dist);
         time = time + Time.deltaTime;
         dist = Vector2.Distance(player.transform.position,transform.position);
         dir = (player.transform.position.x < transform.position.x ? -1 : 1);
