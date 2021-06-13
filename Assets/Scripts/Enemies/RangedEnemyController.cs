@@ -90,6 +90,8 @@ public class RangedEnemyController : EnemyController
 
     private void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
+
         Handles.color = Color.yellow;
         Handles.DrawWireDisc(transform.position, transform.forward, approachRange);
 
@@ -98,5 +100,6 @@ public class RangedEnemyController : EnemyController
 
         Handles.color = Color.blue;
         Handles.DrawWireDisc(transform.position, transform.forward, fleeRange);
+        #endif
     }
 }

@@ -52,10 +52,12 @@ public class MeleeEnemyController : EnemyController
 
     private void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
         Handles.color = Color.yellow;
         Handles.DrawWireDisc(transform.position, transform.forward, chaseRange);
 
         Handles.color = Color.red;
         Handles.DrawWireDisc(transform.position, transform.forward, lungeRange);
+        #endif
     }
 }

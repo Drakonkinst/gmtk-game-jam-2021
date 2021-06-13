@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  scene: 0
+  scene: 3
 --- !u!4 &229971165
 Transform:
   m_ObjectHideFlags: 0
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  scene: 0
+  scene: 1
 --- !u!4 &1196714601
 Transform:
   m_ObjectHideFlags: 0

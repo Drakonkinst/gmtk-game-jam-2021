@@ -190,6 +190,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
         if(chainLength < 0)
         {
             return;
@@ -197,6 +198,7 @@ public class PlayerStatus : MonoBehaviour
 
         Handles.color = Color.red;
         Handles.DrawWireDisc(transform.position, transform.forward, chainLength);
+        #endif
     }
 
 }

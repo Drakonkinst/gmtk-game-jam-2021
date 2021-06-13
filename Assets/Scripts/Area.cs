@@ -2,21 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+
 public class Area : MonoBehaviour
 {
     public float radius = 5.0f;
-    private Transform player;
-    void Start()
+    protected GameObject player;
+
+    protected virtual void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
+        player = PlayerStatus.instance.gameObject;
     }
-    protected bool WithinBounds()
+    public bool WithinBounds()
     {
-        return (Vector3.Distance(player.position,transform.position) <= radius);
+        if (player != null)
+        {
+            Debug.Log("Player Not Null");
+            return (Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.y), 
+                new Vector2(transform.position.x,transform.position.y)) <= radius);
+        }
+        else
+        {
+            Debug.Log("Null Player");
+            return false;
+        }
     }
     protected void OnDrawGizmos()
     {
+        #if UNITY_EDITOR
         Handles.color = Color.red;
         Handles.DrawWireDisc(transform.position, transform.forward, radius);
+        #endif
     }
 }
