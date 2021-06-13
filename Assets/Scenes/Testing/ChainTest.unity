@@ -5830,6 +5830,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 2070046534066579735, guid: d081cd8694af0724d8e7c3a95c35acb1, type: 3}
+      propertyPath: spellIcons.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2453160735799380919, guid: d081cd8694af0724d8e7c3a95c35acb1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
