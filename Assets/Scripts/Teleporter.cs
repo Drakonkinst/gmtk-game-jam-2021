@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Teleporter : Area
 {
-    public int scene = 0; // 
+    public int scene = 1; // 
     private string scenePath;
     // Update is called once per frame
     protected override void Start()
@@ -18,7 +18,7 @@ public class Teleporter : Area
         if(base.WithinBounds())
         {
             Debug.Log("Player within Bounds");
-            SceneManager.LoadScene(scene);
+            SceneManager.LoadScene(scene - 1);
         }
     }
 }

@@ -16,7 +16,6 @@ public class Area : MonoBehaviour
     {
         if (player != null)
         {
-            Debug.Log("Player Not Null");
             return (Vector2.Distance(new Vector2(player.transform.position.x, player.transform.position.y), 
                 new Vector2(transform.position.x,transform.position.y)) <= radius);
         }
