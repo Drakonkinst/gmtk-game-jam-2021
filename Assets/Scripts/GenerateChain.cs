@@ -49,7 +49,7 @@ public class GenerateChain : MonoBehaviour
         ballRB = ballWeight.GetComponent<Rigidbody2D>();
 
         //Debug.Log(linkSeparation + ", " + ballRadius);
-        chainLength = (linkSeparation * numSegments + ballRadius) * 2.0f;
+        chainLength = (linkSeparation * numSegments + ballRadius) * 2.0f / 1.2f;
         //Debug.Log(chainLength);
     }
 

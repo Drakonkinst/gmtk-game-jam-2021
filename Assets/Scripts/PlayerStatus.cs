@@ -112,6 +112,7 @@ public class PlayerStatus : MonoBehaviour
         if(Mathf.Approximately(health, 0.0f))
         {
             // Reload Scene
+            Debug.Log("RELOAD SCENE!");
         }
         HUD.instance.healthBarDisplay.SetPercent(health / maxHealth);
     }

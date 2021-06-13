@@ -6020,7 +6020,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2452877294502247291, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
       propertyPath: m_Distance
-      value: 4.8
+      value: 5.765475
+      objectReference: {fileID: 0}
+    - target: {fileID: 7919984021419539263, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
+      propertyPath: infiniteMana
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 691dcf1012839e04b8f66125f7730576, type: 3}
