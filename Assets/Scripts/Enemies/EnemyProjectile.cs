@@ -24,7 +24,14 @@ public class EnemyProjectile : MonoBehaviour
         time = time + Time.deltaTime;
         if (time <= liveTime)
         {
-            transform.position = Vector2.MoveTowards(transform.position, lastPosition, speed);
+            if(transform.position.x == lastPosition.x && transform.position.y == lastPosition.y)
+            {
+                DestructSelf();
+            } 
+            else
+            {
+                transform.position = Vector2.MoveTowards(transform.position, lastPosition, speed);
+            }
         }
         else
         {
