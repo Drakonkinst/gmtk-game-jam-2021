@@ -44,7 +44,7 @@ public class RangedEnemyController : EnemyController
     {
         if(base.time > nextShot)
         {
-            Instantiate(bullet, new Vector3(transform.position.x + base.dir * xOffset, transform.position.y, -10.0f), Quaternion.identity,bullets.transform);
+            Instantiate(bullet, new Vector3(transform.position.x + base.dir * xOffset, transform.position.y, 0.0f), Quaternion.identity,bullets.transform);
             nextShot = base.time + shootingCooldown;
         }
     }
