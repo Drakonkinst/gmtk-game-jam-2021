@@ -34,13 +34,16 @@ public abstract class Spell
         float currentTime = Time.time;
         if (currentTime >= nextEnable)
         {
-            Execute(ball);
-            PlayerStatus.instance.RemoveMana(manaCost);
-            nextEnable = currentTime + cooldown;
+            bool successful = Execute(ball);
+            if(successful)
+            {
+                PlayerStatus.instance.RemoveMana(manaCost);
+                nextEnable = currentTime + cooldown;
+            }
         }
     }
 
-    protected abstract void Execute(BallController ball);
+    protected abstract bool Execute(BallController ball);
 
     protected void SetResultText(string text)
     {

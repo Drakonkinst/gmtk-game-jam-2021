@@ -61,6 +61,8 @@ public class PlayerController : Groundable
             playerStatus.SetState(PlayerStatus.State.Jumping);
         }
 
+        /*
+        // OnGround indicator
         if (isGrounded)
         {
             GetComponent<SpriteRenderer>().color = Color.white;
@@ -68,7 +70,7 @@ public class PlayerController : Groundable
         else
         {
             GetComponent<SpriteRenderer>().color = Color.black;
-        }
+        }*/
 }
 
     public void SetBallState(bool flag)

@@ -8,8 +8,7 @@ public class Groundable : MonoBehaviour
     private const string slantedPlatformTag = "Slanted";
     private const string ballTag = "Ball";
 
-    private const float groundThreshold = 0.1f;
-    private const float raycastRadius = 0.1f;
+    private const float raycastRadius = 0.02f;
 
     private float radius;
     private bool isCircle = false;
@@ -42,10 +41,10 @@ public class Groundable : MonoBehaviour
     {
         if (isCircle || isCapsule)
         {
-            Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius - raycastRadius);
+            Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius - raycastRadius * 2.0f);
             List<Collider2D> hits = new List<Collider2D>();
             int numFound = Physics2D.OverlapCircle(startPos, raycastRadius, cf.NoFilter(), hits);
-            Debug.DrawRay(transform.position, Vector2.down * (radius + groundThreshold), Color.yellow, 10.0f);
+            Debug.DrawRay(transform.position, Vector2.down * (radius + raycastRadius), Color.yellow, 10.0f);
 
             foreach (Collider2D hit in hits)
             {

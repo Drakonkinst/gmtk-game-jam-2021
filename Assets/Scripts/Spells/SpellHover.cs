@@ -12,10 +12,11 @@ public class SpellHover : Spell
         
     }
 
-    protected override void Execute(BallController ball)
+    protected override bool Execute(BallController ball)
     {
         ball.SetState(BallController.State.Hovering);
         // duration == cooldown
         ball.SetHoveringFor(spellCooldown);
+        return true;
     }
 }

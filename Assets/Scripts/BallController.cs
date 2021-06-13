@@ -39,6 +39,7 @@ public class BallController : Groundable
     private bool isBurning = false;
     private float burningDamageToPlayer;
     private float burningDamageToEnemy;
+    private GameObject pulsingParticle;
 
     private void Start()
     {
@@ -46,6 +47,8 @@ public class BallController : Groundable
         myTransform = transform;
         ballRadius = GetComponent<Collider2D>().bounds.extents.y;
         StartCoroutine(DoBurning());
+        pulsingParticle = myTransform.Find("Pulsing").gameObject;
+        pulsingParticle.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -104,6 +107,8 @@ public class BallController : Groundable
             }
         }
 
+        /*
+        // OnGround indicator
         if(IsOnFlatGround())
         {
             GetComponent<SpriteRenderer>().color = Color.white;
@@ -111,7 +116,7 @@ public class BallController : Groundable
         else
         {
             GetComponent<SpriteRenderer>().color = Color.black;
-        }
+        }*/
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -143,14 +148,23 @@ public class BallController : Groundable
                 {
                     // Enough damage to kill it
                     col.collider.GetComponent<EnemyController>().destruct();
-                    rb.AddForce(new Vector2(0.0f, -50.0f));
-                    rb.velocity = new Vector2(0.0f, -25.0f);
+                    OnKill();
                 } else if(shouldDamageEnemy)
                 {
-                    col.collider.GetComponent<EnemyController>().receiveDamage(enemyDamage);
+                    bool isDead = col.collider.GetComponent<EnemyController>().receiveDamage(enemyDamage);
+                    if(isDead)
+                    {
+                        OnKill();
+                    }
                 }
             }
         }
+    }
+
+    private void OnKill()
+    {
+        rb.AddForce(new Vector2(0.0f, -100.0f), ForceMode2D.Impulse);
+        rb.velocity = new Vector2(0.0f, -25.0f);
     }
 
     public void SetState(State state)
@@ -170,6 +184,7 @@ public class BallController : Groundable
             rb.gravityScale = 0.0f;
             Physics2D.IgnoreCollision(myCollider, playerCollider, true);
             rb.bodyType = RigidbodyType2D.Dynamic;
+            pulsingParticle.SetActive(true);
         }
         else if(state == State.Hovering)
         {
@@ -177,12 +192,14 @@ public class BallController : Groundable
             Physics2D.IgnoreCollision(myCollider, playerCollider, false);
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.velocity = new Vector2(0.0f, 0.0f);
+            pulsingParticle.SetActive(true);
         }
         else if(state == State.Unpowered)
         {
             rb.gravityScale = 1.0f;
             Physics2D.IgnoreCollision(myCollider, playerCollider, false);
             rb.velocity = Vector2.zero;
+            pulsingParticle.SetActive(false);
         }
 
         currentState = state;

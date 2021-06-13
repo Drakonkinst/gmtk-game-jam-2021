@@ -15,8 +15,9 @@ public class SpellEnflame : Spell
         
     }
 
-    protected override void Execute(BallController ball)
+    protected override bool Execute(BallController ball)
     {
         ball.SetBurningFor(burningDuration, damageToPlayer, damageToEnemy);
+        return true;
     }
 }

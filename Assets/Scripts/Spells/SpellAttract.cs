@@ -14,8 +14,9 @@ public class SpellAttract : Spell
     {
     }
 
-    protected override void Execute(BallController ball)
+    protected override bool Execute(BallController ball)
     {
         ball.Attract(range, force, delay);
+        return true;
     }
 }

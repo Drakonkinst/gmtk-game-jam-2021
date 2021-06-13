@@ -30,13 +30,15 @@ public class EnemyController : Groundable
         currentPlatform = GetPlatform();
     }
 
-    public virtual void receiveDamage(float amount)
+    public virtual bool receiveDamage(float amount)
     {
         health -= amount;
         if(health < 0.0f)
         {
             destruct();
+            return true;
         }
+        return false;
     }
 
     public virtual void destruct()

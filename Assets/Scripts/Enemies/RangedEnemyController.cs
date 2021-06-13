@@ -46,7 +46,7 @@ public class RangedEnemyController : EnemyController
                 {
                     // right
                     float rightEdge = currentPlatform.bounds.center.x + currentPlatform.bounds.extents.x;
-                    Debug.Log(rightEdge - transform.position.x);
+                    //Debug.Log(rightEdge - transform.position.x);
                     if (rightEdge - transform.position.x <= edgeThreshold)
                     {
                         isFleeing = false;
@@ -56,7 +56,7 @@ public class RangedEnemyController : EnemyController
                 {
                     // left
                     float leftEdge = currentPlatform.bounds.center.x - currentPlatform.bounds.extents.x;
-                    Debug.Log(transform.position.x - leftEdge);
+                    //Debug.Log(transform.position.x - leftEdge);
                     if (transform.position.x - leftEdge <= edgeThreshold)
                     {
                         isFleeing = false;

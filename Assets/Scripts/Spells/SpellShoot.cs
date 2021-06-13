@@ -15,20 +15,21 @@ public class SpellShoot : Spell
 
     }
 
-    protected override void Execute(BallController ball)
+    protected override bool Execute(BallController ball)
     {
         Vector2 dir = ball.GetComponent<Rigidbody2D>().velocity;
         if(ball.currentState == BallController.State.Controlled)
         {
             SetResultText("Cannot use this while controlling orb!");
-            return;
+            return false;
         }
         if(dir.sqrMagnitude < minVelocity * minVelocity)
         {
             SetResultText("Orb must be moving!");
-            return;
+            return false;
         }
 
         ball.ShootBall(dir.normalized, force);
+        return true;
     }
 }

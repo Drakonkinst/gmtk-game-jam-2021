@@ -14,8 +14,9 @@ public class SpellRepel : Spell
     {
     }
 
-    protected override void Execute(BallController ball)
+    protected override bool Execute(BallController ball)
     {
         ball.Repel(range, force, delay);
+        return true;
     }
 }
