@@ -11,6 +11,8 @@ public class PlayerController : Groundable
 
     public float ballStateMass = 20.0f;
 
+    public AudioClip jumpSound;
+
     [HideInInspector]
     public float playerXMovement = 0.0f;
 
@@ -116,6 +118,7 @@ public class PlayerController : Groundable
 
     public void Jump()
     {
+        SoundManager.Instance.Play(jumpSound, myTransform, 0.5f, 1.2f);
         rb.AddForce(new Vector2(0.0f, jumpForce));
     }
 

@@ -178,6 +178,7 @@ MonoBehaviour:
   jumpCooldown: 10
   responsiveness: 100
   ballStateMass: 20
+  jumpSound: {fileID: 8300000, guid: 04dac848470999140b7a7d8b4091f1d0, type: 3}
   playerXMovement: 0
 --- !u!114 &7919984021419539263
 MonoBehaviour:
@@ -201,6 +202,7 @@ MonoBehaviour:
   healthRegenPerTick: 0.2
   updateTick: 0.01
   infiniteMana: 0
+  damageSound: {fileID: 8300000, guid: af49ddc0782d5994fa488fadff23dfb8, type: 3}
   chainLength: 0
 --- !u!95 &3041778984697798725
 Animator:

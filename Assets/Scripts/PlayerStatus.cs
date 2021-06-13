@@ -30,6 +30,8 @@ public class PlayerStatus : MonoBehaviour
     public float updateTick = 0.01f;
     public bool infiniteMana = false;
 
+    public AudioClip damageSound;
+
     private float maxHealth;
     private float maxMana;
     private float nextManaRegenEnable = -1.0f;
@@ -61,7 +63,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void SetState(State state)
     {
-        if(currentState == state)
+        if (currentState == state)
         {
             return;
         }
@@ -74,19 +76,19 @@ public class PlayerStatus : MonoBehaviour
         currentState = state;
         // TODO: set sprite as necessary
 
-        if(currentState == State.Idle)
+        if (currentState == State.Idle)
         {
             animator.SetTrigger("Idle");
         }
-        else if(currentState == State.Jumping)
+        else if (currentState == State.Jumping)
         {
             animator.SetTrigger("Idle");
         }
-        else if(currentState == State.Moving)
+        else if (currentState == State.Moving)
         {
             animator.SetTrigger("Running");
         }
-        else if(currentState == State.MovingBall)
+        else if (currentState == State.MovingBall)
         {
             animator.SetTrigger("Casting");
         }
@@ -94,9 +96,14 @@ public class PlayerStatus : MonoBehaviour
 
     public void Damage(float amount)
     {
-        if(amount > healthBarShakeThreshold)
+        if (amount > healthBarShakeThreshold)
         {
             HUD.instance.healthBarDisplay.Shake();
+            SoundManager.Instance.Play(damageSound, transform.position, 0.2f, 1.0f);
+        }
+        else
+        {
+            SoundManager.Instance.Play(damageSound, transform.position, 0.1f, 2.0f);
         }
         Heal(-amount);
         nextHealthRegenEnable = Time.time + delayToStartHealthRegen;
@@ -110,7 +117,7 @@ public class PlayerStatus : MonoBehaviour
     public void SetHealth(float amount)
     {
         health = Mathf.Clamp(amount, 0.0f, maxHealth);
-        if(Mathf.Approximately(health, 0.0f))
+        if (Mathf.Approximately(health, 0.0f))
         {
             // Reload Scene
             Debug.Log("RELOAD SCENE!");
@@ -127,7 +134,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void RemoveMana(float amount)
     {
-        if(infiniteMana)
+        if (infiniteMana)
         {
             return;
         }
@@ -138,7 +145,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void RemoveMana(string eventString)
     {
-        if(!eventToDamageValue.ContainsKey(eventString))
+        if (!eventToDamageValue.ContainsKey(eventString))
         {
             Debug.Log("Invalid event: " + eventString);
             return;
@@ -155,7 +162,7 @@ public class PlayerStatus : MonoBehaviour
 
     private IEnumerator DoUpdate()
     {
-        while(true)
+        while (true)
         {
             yield return new WaitForSeconds(updateTick);
 
@@ -173,13 +180,13 @@ public class PlayerStatus : MonoBehaviour
             }
 
             // Regenerate health
-            if(currTime > nextHealthRegenEnable)
+            if (currTime > nextHealthRegenEnable)
             {
                 Heal(healthRegenPerTick);
             }
 
             // Kill player upon reaching a certain height
-            if(instance.gameObject.transform.position.y <= -50.0f)
+            if (instance.gameObject.transform.position.y <= -50.0f)
             {
                 SetHealth(0);
             }
@@ -193,7 +200,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         if(chainLength < 0)
         {
             return;
@@ -201,7 +208,7 @@ public class PlayerStatus : MonoBehaviour
 
         Handles.color = Color.red;
         Handles.DrawWireDisc(transform.position, transform.forward, chainLength);
-        #endif
+#endif
     }
 
 }

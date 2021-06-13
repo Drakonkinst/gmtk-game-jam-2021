@@ -143,6 +143,12 @@ MonoBehaviour:
   enemyDamage: 5
   currentState: 0
   ballRadius: 0
+  startControllingBallClip: {fileID: 8300000, guid: ca7e40cafa444b34c95dd83954e599ec, type: 3}
+  ballImpactClip: {fileID: 8300000, guid: 0ea03ba64f3f55e40847447e41d78a04, type: 3}
+  shootSound: {fileID: 8300000, guid: 50a48f2423c92074bb7298b6e0dfcc09, type: 3}
+  fireSound: {fileID: 8300000, guid: eff267fa994899c47accfb1963ff5559, type: 3}
+  attractSound: {fileID: 8300000, guid: 1ef687a42ad56094bb40c15c22efbe33, type: 3}
+  repelSound: {fileID: 8300000, guid: 9c6527dcf3d12af43b9681d359d82ee3, type: 3}
 --- !u!114 &2699196909783112761
 MonoBehaviour:
   m_ObjectHideFlags: 0

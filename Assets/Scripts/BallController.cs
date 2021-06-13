@@ -31,6 +31,7 @@ public class BallController : Groundable
     private Rigidbody2D rb;
     private Transform myTransform;
     private Vector2 ballMovementDirection = Vector2.zero;
+    private bool isFirstTime = true;
 
     private State lastStateBeforeControlled = State.Unpowered;
 
@@ -41,6 +42,13 @@ public class BallController : Groundable
     private float burningDamageToEnemy;
     private GameObject pulsingParticle;
     private GameObject flamingParticle;
+
+    public AudioClip startControllingBallClip;
+    public AudioClip ballImpactClip;
+    public AudioClip shootSound;
+    public AudioClip fireSound;
+    public AudioClip attractSound;
+    public AudioClip repelSound;
 
     private void Start()
     {
@@ -95,9 +103,13 @@ public class BallController : Groundable
             if(onGround != lastOnGround)
             {
                 lastOnGround = onGround;
-                if(onGround)
+                if(isFirstTime)
                 {
-                    CameraController.instance.GetComponent<CameraShake>().Shake();
+                    isFirstTime = false;
+                }
+                else if(onGround)
+                {
+                    OnBallImpact();
                 }
             }
 
@@ -132,7 +144,8 @@ public class BallController : Groundable
             {
                 return;
             }
-            CameraController.instance.GetComponent<CameraShake>().Shake();
+
+            OnBallImpact();
         }
         else if(currentState == State.Unpowered && !onGround)
         {
@@ -164,6 +177,12 @@ public class BallController : Groundable
         }
     }
 
+    private void OnBallImpact()
+    {
+        SoundManager.Instance.Play(ballImpactClip, myTransform.position, 0.05f, 0.9f);
+        CameraController.instance.GetComponent<CameraShake>().Shake();
+    }
+
     private void OnKill()
     {
         rb.AddForce(new Vector2(0.0f, -100.0f), ForceMode2D.Impulse);
@@ -188,6 +207,7 @@ public class BallController : Groundable
             Physics2D.IgnoreCollision(myCollider, playerCollider, true);
             rb.bodyType = RigidbodyType2D.Dynamic;
             pulsingParticle.SetActive(true);
+            SoundManager.Instance.Play(startControllingBallClip, transform.position, 0.2f, 1.0f);
         }
         else if(state == State.Hovering)
         {
@@ -234,6 +254,7 @@ public class BallController : Groundable
 
     public void SetHoveringFor(float duration)
     {
+        SoundManager.Instance.Play(startControllingBallClip, transform.position, 0.2f, 1.0f);
         canHover = true;
         StartCoroutine(StopHovering(duration));
     }
@@ -251,6 +272,7 @@ public class BallController : Groundable
 
     public void SetBurningFor(float duration, float damageToPlayer, float damageToEnemy)
     {
+        SoundManager.Instance.Play(fireSound, myTransform.position, 0.6f, 0.5f);
         isBurning = true;
         burningDamageToPlayer = damageToPlayer;
         burningDamageToEnemy = damageToEnemy;
@@ -299,6 +321,7 @@ public class BallController : Groundable
     private IEnumerator DoAttract(float range, float force, float delay)
     {
         yield return new WaitForSeconds(delay);
+        SoundManager.Instance.Play(attractSound, myTransform.position, 0.4f, 1.0f);
         List<Collider2D> touching = new List<Collider2D>();
         Vector2 pos = myTransform.position;
         int numFound = Physics2D.OverlapCircle(pos, ballRadius + range, cf.NoFilter(), touching);
@@ -321,6 +344,7 @@ public class BallController : Groundable
     private IEnumerator DoRepel(float range, float force, float delay)
     {
         yield return new WaitForSeconds(delay);
+        SoundManager.Instance.Play(repelSound, myTransform.position, 1.0f, 1.0f);
         List<Collider2D> touching = new List<Collider2D>();
         Vector2 pos = myTransform.position;
         int numFound = Physics2D.OverlapCircle(pos, ballRadius + range, cf.NoFilter(), touching);
@@ -337,6 +361,7 @@ public class BallController : Groundable
 
     public void ShootBall(Vector2 dir, float force)
     {
+        SoundManager.Instance.Play(shootSound, myTransform.position, 1.0f, 1.0f);
         rb.AddForce(dir * force, ForceMode2D.Impulse);
     }
 

@@ -15,6 +15,7 @@ public class RangedEnemyController : EnemyController
     
     public float fleeSpeed = 3.0f;
     public float approachSpeed = 1.5f;
+    public AudioClip shootSound;
     
     public float shootingCooldown = 1.5f;
     private float nextShot = -1.0f;
@@ -83,6 +84,7 @@ public class RangedEnemyController : EnemyController
     {
         if(base.time > nextShot)
         {
+            SoundManager.Instance.Play(shootSound, transform.position, 0.2f, 0.5f);
             Instantiate(bullet, new Vector3(transform.position.x + base.dir * xOffset, transform.position.y, 0.0f), Quaternion.identity,bullets.transform);
             nextShot = base.time + shootingCooldown;
         }

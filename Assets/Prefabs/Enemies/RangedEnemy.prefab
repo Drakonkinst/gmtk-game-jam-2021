@@ -142,4 +142,5 @@ MonoBehaviour:
   fleeRange: 8
   fleeSpeed: 3
   approachSpeed: 1.5
+  shootSound: {fileID: 8300000, guid: 76f34c92a96165947a346d71a8864f25, type: 3}
   shootingCooldown: 1.5

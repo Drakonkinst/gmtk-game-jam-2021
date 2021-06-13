@@ -115,3 +115,4 @@ MonoBehaviour:
   liveTime: 2
   speed: 0.15
   damage: 5
+  hitSound: {fileID: 8300000, guid: 1cfb512a7b459ff4193e1ddb950fb6dc, type: 3}

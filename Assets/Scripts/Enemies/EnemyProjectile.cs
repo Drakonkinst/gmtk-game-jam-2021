@@ -13,6 +13,8 @@ public class EnemyProjectile : MonoBehaviour
     private float startTime;
     private Vector3 velocityDir;
 
+    public AudioClip hitSound;
+
     //Decided against using Rigidbody2D because of unexpected behavior
     void Start()
     {
@@ -27,6 +29,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (InputManager.instance.ball.IsOnBall(transform.position) || Time.time > startTime + liveTime)
         {
+            SoundManager.Instance.Play(hitSound, transform.position, 0.5f, 0.8f);
             DestructSelf();
             return;
         }
