@@ -81,7 +81,7 @@ public class PlayerStatus : MonoBehaviour
         health = Mathf.Clamp(amount, 0.0f, maxHealth);
         if(Mathf.Approximately(health, 0.0f))
         {
-            WorldManager.game.SpawnPlayer(); // Will destroy the chain and ball first, then the last player, then spawn a new player at the last checkpoint
+            // Reload Scene
         }
         HUD.instance.healthBarDisplay.SetPercent(health / maxHealth);
     }

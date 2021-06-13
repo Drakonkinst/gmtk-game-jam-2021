@@ -13,28 +13,12 @@ public class WorldManager : MonoBehaviour
     {
         game = this;
     }
-
-    void Start()
+    public void SpawnEnemy()
     {
-        lastSpawnPoint = new Vector2(0.0f, -3.48f);
-        SpawnPlayer();
+
     }
 
-    public void SetPlayerSpawn(Vector2 spawn)
-    {
-        lastSpawnPoint = spawn;
-    }
 
-    public void SpawnPlayer()
-    {
-        if(currentPlayer != null) {
-            DestroyChain();
-            Destroy(currentPlayer);
-        }
-        Vector3 spawnLocation = new Vector3(lastSpawnPoint.x, lastSpawnPoint.y, 0.0f);
-        currentPlayer = Instantiate(playerPrefab, spawnLocation, Quaternion.identity);
-        
-    }
     public void DestroyChain()
     {
         foreach (Transform child in currentPlayer.transform)
