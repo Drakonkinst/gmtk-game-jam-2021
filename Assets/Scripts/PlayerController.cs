@@ -21,11 +21,13 @@ public class PlayerController : Groundable
     private Transform myTransform;
     private PlayerStatus playerStatus;
     private float prevXMovement = 0.0f;
+    private SpriteRenderer sprite;
 
     protected override void Awake()
     {
         base.Awake();
         myTransform = transform;
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -42,10 +44,22 @@ public class PlayerController : Groundable
         rb.AddForce((targetVelocity - new Vector2(rb.velocity.x, 0.0f)) * responsiveness);
 
         // TODO: Can't jump if held down by ball--this might be done for us
+        if(playerXMovement > 0)
+        {
+            sprite.flipX = false;
+        }
+        if(playerXMovement < 0)
+        {
+            sprite.flipX = true;
+        }
 
         bool isGrounded = IsGrounded();
 
-        if (isGrounded)
+        if(InputManager.instance.ball.currentState == BallController.State.Controlled)
+        {
+            return;
+        }
+        if (isGrounded) 
         {
             if (Mathf.Approximately(playerXMovement, 0.0f))
             {

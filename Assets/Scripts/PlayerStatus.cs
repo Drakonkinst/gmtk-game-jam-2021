@@ -34,6 +34,8 @@ public class PlayerStatus : MonoBehaviour
     private float nextManaRegenEnable = -1.0f;
     private float nextHealthRegenEnable = -1.0f;
 
+    private Animator animator;
+
     [HideInInspector]
     public float chainLength = -1.0f;
 
@@ -47,6 +49,7 @@ public class PlayerStatus : MonoBehaviour
         instance = this;
         maxHealth = health;
         maxMana = mana;
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -57,8 +60,35 @@ public class PlayerStatus : MonoBehaviour
 
     public void SetState(State state)
     {
+        if(currentState == state)
+        {
+            return;
+        }
+
+        /*
+        if(state == State.MovingBall)
+        {
+            Debug.Log(currentState.ToString());
+        }//*/
         currentState = state;
         // TODO: set sprite as necessary
+
+        if(currentState == State.Idle)
+        {
+            animator.SetTrigger("Idle");
+        }
+        else if(currentState == State.Jumping)
+        {
+            animator.SetTrigger("Idle");
+        }
+        else if(currentState == State.Moving)
+        {
+            animator.SetTrigger("Running");
+        }
+        else if(currentState == State.MovingBall)
+        {
+            animator.SetTrigger("Casting");
+        }
     }
 
     public void Damage(float amount)
