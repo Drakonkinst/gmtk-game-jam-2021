@@ -1086,10 +1086,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: 
-  AudioTracks: []
-  Volume: 1
+  AudioTracks:
+  - {fileID: 8300000, guid: 023db3b2c59cff94eb70fab430652b7c, type: 3}
+  Volume: 0.1
   Pitch: 1
-  NoLog: 0
+  NoLog: 1
 --- !u!1 &1770530805
 GameObject:
   m_ObjectHideFlags: 0
