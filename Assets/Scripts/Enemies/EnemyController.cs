@@ -10,7 +10,6 @@ public class EnemyController : Groundable
     protected float dist = 0.0f;
     protected int dir = -1;
     public float health = 10.0f;
-    public float damage = 1.0f;
 
     [HideInInspector]
     public Collider2D currentPlatform;

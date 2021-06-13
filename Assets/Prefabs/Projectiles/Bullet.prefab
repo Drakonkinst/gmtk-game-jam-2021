@@ -97,7 +97,7 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.010553569}
+  m_Offset: {x: 0, y: -0.01}
   serializedVersion: 2
   m_Radius: 0.051472217
 --- !u!114 &9044594524082222501
@@ -113,4 +113,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liveTime: 2
-  speed: 0.1
+  speed: 0.15
+  damage: 5

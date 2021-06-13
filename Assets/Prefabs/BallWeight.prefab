@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
-  velocityThresholdForPlayerDamage: 7
+  velocityThresholdForPlayerDamage: 8
   velocityThresholdForEnemyDamage: 5
   enemyDamage: 0.5
   currentState: 0

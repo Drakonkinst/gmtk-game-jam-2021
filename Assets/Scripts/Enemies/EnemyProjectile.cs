@@ -9,6 +9,7 @@ public class EnemyProjectile : MonoBehaviour
 {
     public float liveTime = 4.0f;
     public float speed = 0.1f;
+    public float damage = 5.0f;
     private float startTime;
     private Vector3 velocityDir;
 
@@ -46,6 +47,10 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (col.tag != "Enemy")
         {
+            if(col.tag == "Player")
+            {
+                PlayerStatus.instance.Damage(damage);
+            }
             DestructSelf();
         }
     }

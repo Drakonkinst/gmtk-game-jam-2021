@@ -135,9 +135,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  damage: 1
+  damage: 10
+  currentPlatform: {fileID: 0}
   chaseRange: 20
   lungeRange: 5
   chaseSpeed: 10
   lungeForce: 5
-  lungeCooldown: 1
+  lungeCooldown: 3
