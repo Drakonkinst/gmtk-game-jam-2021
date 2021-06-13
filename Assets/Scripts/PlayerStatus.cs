@@ -26,7 +26,6 @@ public class PlayerStatus : MonoBehaviour
     public float manaRegenPerTick = 1.0f;
     public float manaTick = 0.01f;
     public float updateTick = 0.01f;
-    public Vector2 spawnPoint;
     public bool infiniteMana = false;
 
     private float maxHealth;
@@ -81,7 +80,7 @@ public class PlayerStatus : MonoBehaviour
         health = Mathf.Clamp(amount, 0.0f, maxHealth);
         if(Mathf.Approximately(health, 0.0f))
         {
-            // Player is dead
+            WorldManager.game.SpawnPlayer(); // Will destroy the chain and ball first, then the last player, then spawn a new player at the last checkpoint
         }
         HUD.instance.healthBarDisplay.SetPercent(health / maxHealth);
     }
