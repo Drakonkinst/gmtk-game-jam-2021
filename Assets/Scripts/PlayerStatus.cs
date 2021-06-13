@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus : MonoBehaviour
 {
@@ -113,6 +114,8 @@ public class PlayerStatus : MonoBehaviour
         {
             // Reload Scene
             Debug.Log("RELOAD SCENE!");
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
         }
         HUD.instance.healthBarDisplay.SetPercent(health / maxHealth);
     }
