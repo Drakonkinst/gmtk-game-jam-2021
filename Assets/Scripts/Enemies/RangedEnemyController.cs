@@ -82,11 +82,12 @@ public class RangedEnemyController : EnemyController
 
     void shoot(Vector2 target)
     {
+        
         if(base.time > nextShot)
         {
+            nextShot = base.time + shootingCooldown;
             SoundManager.Instance.Play(shootSound, transform.position, 0.2f, 0.5f);
             Instantiate(bullet, new Vector3(transform.position.x + base.dir * xOffset, transform.position.y, 0.0f), Quaternion.identity,bullets.transform);
-            nextShot = base.time + shootingCooldown;
         }
     }
 

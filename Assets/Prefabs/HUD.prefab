@@ -459,7 +459,6 @@ MonoBehaviour:
   - {fileID: 1975274168533709940}
   - {fileID: 1975274168678225586}
   - {fileID: 1975274168585563721}
-  - {fileID: 0}
   spellResultText: {fileID: 6172741871171101810}
   maxSpellResultDisplayTime: 2
 --- !u!1 &8980015073619709965
