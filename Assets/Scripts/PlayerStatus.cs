@@ -49,7 +49,6 @@ public class PlayerStatus : MonoBehaviour
 
     private void Start()
     {
-        spawnPoint = new Vector2(0.0f, -3.48f);
         chainLength = GetComponent<GenerateChain>().chainLength;
         StartCoroutine(DoUpdate());
         StartCoroutine(RegenerateMana());
@@ -116,10 +115,6 @@ public class PlayerStatus : MonoBehaviour
     {
         mana = Mathf.Clamp(amount, 0.0f, maxMana);
         HUD.instance.manaBarDisplay.SetPercent(mana / maxMana);
-    }
-    public void SetSpawn(Vector2 spawn)
-    {
-        spawnPoint = spawn;
     }
 
     private IEnumerator RegenerateMana()

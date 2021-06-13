@@ -37,7 +37,7 @@ public class WorldManager : MonoBehaviour
     }
     public void DestroyChain()
     {
-        foreach (Transform child in currentPlayer)
+        foreach (Transform child in currentPlayer.transform)
         {
             Destroy(child.gameObject);
         }
