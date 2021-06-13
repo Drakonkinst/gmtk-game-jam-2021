@@ -40,6 +40,7 @@ public class BallController : Groundable
     private float burningDamageToPlayer;
     private float burningDamageToEnemy;
     private GameObject pulsingParticle;
+    private GameObject flamingParticle;
 
     private void Start()
     {
@@ -48,7 +49,9 @@ public class BallController : Groundable
         ballRadius = GetComponent<Collider2D>().bounds.extents.y;
         StartCoroutine(DoBurning());
         pulsingParticle = myTransform.Find("Pulsing").gameObject;
+        flamingParticle = myTransform.Find("Flaming").gameObject;
         pulsingParticle.SetActive(false);
+        flamingParticle.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -251,12 +254,14 @@ public class BallController : Groundable
         isBurning = true;
         burningDamageToPlayer = damageToPlayer;
         burningDamageToEnemy = damageToEnemy;
+        flamingParticle.SetActive(true);
         StartCoroutine(StopBurning(duration));
     }
 
     private IEnumerator StopBurning(float duration)
     {
         yield return new WaitForSeconds(duration);
+        flamingParticle.SetActive(false);
         isBurning = false;
     }
 
