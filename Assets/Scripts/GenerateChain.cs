@@ -18,8 +18,8 @@ public class GenerateChain : MonoBehaviour
 
     private void Awake()
     {
-        float linkSeparation = chainObject.GetComponent<Renderer>().bounds.extents.y * 2.0f;
-        float ballRadius = ballObject.GetComponent<Renderer>().bounds.extents.y;
+        float linkSeparation = chainObject.GetComponent<Renderer>().bounds.extents.x * 2.0f;
+        float ballRadius = ballObject.GetComponent<Renderer>().bounds.extents.x;
         float ballSeparation = ballRadius + linkSeparation / 2.0f;
 
         anchorTransform = transform;
@@ -30,7 +30,7 @@ public class GenerateChain : MonoBehaviour
         // Add chain links
         for (int i = 0; i < numSegments - 1; ++i)
         {
-            currPos += new Vector2(0, linkSeparation);
+            currPos -= new Vector2(linkSeparation, 0);
             GameObject chainLink = Instantiate(chainObject, anchorTransform);
             chainLink.transform.position = currPos;
             joint.connectedBody = chainLink.GetComponent<Rigidbody2D>();
@@ -40,7 +40,7 @@ public class GenerateChain : MonoBehaviour
         }
 
         // Add ball
-        currPos += new Vector2(0, ballSeparation);
+        currPos -= new Vector2(ballSeparation, 0.0f);
         GameObject ballWeight = Instantiate(ballObject, anchorTransform);
         ballWeight.transform.position = currPos;
         joint.connectedBody = ballWeight.GetComponent<Rigidbody2D>();
