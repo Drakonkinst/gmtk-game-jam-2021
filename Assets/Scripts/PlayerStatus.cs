@@ -23,14 +23,16 @@ public class PlayerStatus : MonoBehaviour
     public float healthBarShakeThreshold = 20.0f;
 
     public float delayToStartManaRegen = 1.5f;
+    public float delayToStartHealthRegen = 5.0f;
     public float manaRegenPerTick = 1.0f;
-    public float manaTick = 0.01f;
+    public float healthRegenPerTick = 0.2f;
     public float updateTick = 0.01f;
     public bool infiniteMana = false;
 
     private float maxHealth;
     private float maxMana;
     private float nextManaRegenEnable = -1.0f;
+    private float nextHealthRegenEnable = -1.0f;
 
     [HideInInspector]
     public float chainLength = -1.0f;
@@ -51,7 +53,6 @@ public class PlayerStatus : MonoBehaviour
     {
         chainLength = GetComponent<GenerateChain>().chainLength;
         StartCoroutine(DoUpdate());
-        StartCoroutine(RegenerateMana());
     }
 
     public void SetState(State state)
@@ -67,6 +68,7 @@ public class PlayerStatus : MonoBehaviour
             HUD.instance.healthBarDisplay.Shake();
         }
         Heal(-amount);
+        nextHealthRegenEnable = Time.time + delayToStartHealthRegen;
     }
 
     public void Heal(float amount)
@@ -117,29 +119,29 @@ public class PlayerStatus : MonoBehaviour
         HUD.instance.manaBarDisplay.SetPercent(mana / maxMana);
     }
 
-    private IEnumerator RegenerateMana()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(manaTick);
-
-            float currTime = Time.time;
-            if(currTime > nextManaRegenEnable)
-            {
-                AddMana(manaRegenPerTick);
-            }
-        }
-    }
-
     private IEnumerator DoUpdate()
     {
         while(true)
         {
             yield return new WaitForSeconds(updateTick);
 
+            // Drain mana if moving ball
             if (currentState == State.MovingBall)
             {
                 RemoveMana("MovingBall");
+            }
+
+            // Regenerate mana
+            float currTime = Time.time;
+            if (currTime > nextManaRegenEnable)
+            {
+                AddMana(manaRegenPerTick);
+            }
+
+            // Regenerate health
+            if(currTime > nextHealthRegenEnable)
+            {
+                Heal(healthRegenPerTick);
             }
         }
     }
