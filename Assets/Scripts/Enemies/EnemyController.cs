@@ -29,6 +29,10 @@ public class EnemyController : Groundable
     public virtual void receiveDamage(float amount)
     {
         health -= amount;
+        if(health < 0.0f)
+        {
+            destruct();
+        }
     }
 
     public virtual void destruct()
