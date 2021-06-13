@@ -143,6 +143,12 @@ public class PlayerStatus : MonoBehaviour
             {
                 Heal(healthRegenPerTick);
             }
+
+            // Kill player upon reaching a certain height
+            if(instance.gameObject.transform.position.y <= -50.0f)
+            {
+                SetHealth(0);
+            }
         }
     }
 
