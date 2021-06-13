@@ -18,7 +18,7 @@ public class Teleporter : Area
         if(base.WithinBounds())
         {
             Debug.Log("Player within Bounds");
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(scene);
         }
     }
 }
