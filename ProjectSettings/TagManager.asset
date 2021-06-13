@@ -9,6 +9,7 @@ TagManager:
   - Ball
   - Slanted
   - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX

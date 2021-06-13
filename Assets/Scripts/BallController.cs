@@ -11,8 +11,6 @@ public class BallController : Groundable
         Hovering
     }
 
-    
-
     private const float chainLengthBuffer = 0.5f;
     private const float distanceSlowingThreshold = 0.9f;
     private const float maxSlowing = 0.8f;
@@ -21,7 +19,6 @@ public class BallController : Groundable
     public float velocityThresholdForPlayerDamage = 8.0f;
     public float velocityThresholdForEnemyDamage = 5.0f;
     public float enemyDamage = 0.5f;
-
 
     [HideInInspector]
     public State currentState = State.Unpowered;
@@ -34,11 +31,13 @@ public class BallController : Groundable
 
     private bool lastOnGround = false;
     private bool canHover = false;
+    private float ballRadius;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         myTransform = transform;
+        ballRadius = GetComponent<Collider2D>().bounds.extents.y;
     }
 
     private void FixedUpdate()
@@ -109,7 +108,8 @@ public class BallController : Groundable
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if(IsGround(col.collider))
+        bool onGround = IsGround(col.collider);
+        if (onGround)
         {
             if(currentState == State.Hovering)
             {
@@ -117,7 +117,7 @@ public class BallController : Groundable
             }
             CameraController.instance.GetComponent<CameraShake>().Shake();
         }
-        else if(currentState == State.Unpowered)
+        else if(currentState == State.Unpowered && !onGround)
         {
             bool shouldDamagePlayer = col.relativeVelocity.sqrMagnitude >= velocityThresholdForPlayerDamage * velocityThresholdForPlayerDamage;
             bool shouldDamageEnemy = col.relativeVelocity.sqrMagnitude >= velocityThresholdForEnemyDamage * velocityThresholdForEnemyDamage;
@@ -264,5 +264,10 @@ public class BallController : Groundable
 
         Gizmos.color = Color.white;
         Gizmos.DrawLine(myTransform.position, PredictNextPosition(rb.velocity, 0.1f));
+    }
+    
+    public bool IsOnBall(Vector2 pos)
+    {
+        return (pos - (Vector2)myTransform.position).sqrMagnitude <= ballRadius * ballRadius;
     }
 }
