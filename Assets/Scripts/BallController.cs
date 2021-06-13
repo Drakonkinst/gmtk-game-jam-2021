@@ -18,7 +18,9 @@ public class BallController : Groundable
     private const float maxSlowing = 0.8f;
 
     public float maxSpeed = 10.0f;
-    public float velocityThresholdForDamage = 3.0f;
+    public float velocityThresholdForPlayerDamage = 8.0f;
+    public float velocityThresholdForEnemyDamage = 5.0f;
+    public float enemyDamage = 0.5f;
 
 
     [HideInInspector]
@@ -115,11 +117,29 @@ public class BallController : Groundable
             }
             CameraController.instance.GetComponent<CameraShake>().Shake();
         }
-        else if(currentState == State.Unpowered && rb.velocity.sqrMagnitude >= velocityThresholdForDamage * velocityThresholdForDamage)
+        else if(currentState == State.Unpowered)
         {
+            bool shouldDamagePlayer = col.relativeVelocity.sqrMagnitude >= velocityThresholdForPlayerDamage * velocityThresholdForPlayerDamage;
+            bool shouldDamageEnemy = col.relativeVelocity.sqrMagnitude >= velocityThresholdForEnemyDamage * velocityThresholdForEnemyDamage;
+            //Debug.Log(col.relativeVelocity.magnitude);
             if(col.collider.tag == "Player")
             {
-                PlayerStatus.instance.Damage(30.0f);
+                if(shouldDamagePlayer)
+                {
+                    PlayerStatus.instance.Damage(30.0f);
+                }
+            } else if(col.collider.tag == "Enemy")
+            {
+                if(shouldDamagePlayer)
+                {
+                    // Enough damage to kill it
+                    col.collider.GetComponent<EnemyController>().destruct();
+                    rb.AddForce(new Vector2(0.0f, -50.0f));
+                    rb.velocity = new Vector2(0.0f, -25.0f);
+                } else if(shouldDamageEnemy)
+                {
+                    col.collider.GetComponent<EnemyController>().receiveDamage(enemyDamage);
+                }
             }
         }
     }

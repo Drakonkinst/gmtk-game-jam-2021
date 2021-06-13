@@ -134,6 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f010f111566a64496b8651a5fd8152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPowered: 0
   maxSpeed: 10
-  velocityThresholdForDamage: 3
+  velocityThresholdForPlayerDamage: 7
+  velocityThresholdForEnemyDamage: 5
+  enemyDamage: 0.5
+  currentState: 0
