@@ -136,11 +136,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   damage: 1
+  currentPlatform: {fileID: 0}
   bullet: {fileID: 6667810702326207275, guid: 4d3d236ca503a454cafeb3650748d7d1, type: 3}
-  bullets: {fileID: 4791309068836296364, guid: a0d7c1e4472f90745927e52092f5b152, type: 3}
   approachRange: 30
-  shootingRange: 20
-  fleeRange: 10
+  shootingRange: 12
+  fleeRange: 8
   fleeSpeed: 3
   approachSpeed: 1.5
   shootingCooldown: 1.5

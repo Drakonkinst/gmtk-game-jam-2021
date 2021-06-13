@@ -108,8 +108,9 @@ public class BallController : Groundable
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        bool onGround = IsGround(col.collider);
-        if (onGround)
+        bool isGround = IsGround(col.collider);
+        bool onGround = IsGrounded();
+        if (isGround)
         {
             if(currentState == State.Hovering)
             {

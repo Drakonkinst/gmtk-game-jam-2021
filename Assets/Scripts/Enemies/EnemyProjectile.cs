@@ -18,7 +18,7 @@ public class EnemyProjectile : MonoBehaviour
         Vector3 playerPos = PlayerStatus.instance.transform.position;
         velocityDir = (playerPos - transform.position).normalized;
         transform.LookAt(playerPos);
-        transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
+        transform.Rotate(new Vector3(0.0f, 90.0f, 90.0f));
         startTime = Time.time;
     }
 
@@ -46,7 +46,6 @@ public class EnemyProjectile : MonoBehaviour
     {
         if (col.tag != "Enemy")
         {
-            Debug.Log("Collision with " + col.tag);
             DestructSelf();
         }
     }

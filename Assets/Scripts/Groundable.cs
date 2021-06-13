@@ -9,10 +9,12 @@ public class Groundable : MonoBehaviour
     private const string ballTag = "Ball";
 
     private const float groundThreshold = 0.1f;
+    private const float raycastRadius = 0.1f;
 
     private float radius;
     private bool isCircle = false;
     private bool isCapsule = false;
+    private ContactFilter2D cf;
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -33,50 +35,45 @@ public class Groundable : MonoBehaviour
 
     public bool IsGrounded()
     {
+        return GetGround() != null;
+    }
+
+    public Collider2D GetGround()
+    {
         if (isCircle || isCapsule)
         {
-            Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius);
-            RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, Vector2.down, groundThreshold);
+            Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius - raycastRadius);
+            List<Collider2D> hits = new List<Collider2D>();
+            int numFound = Physics2D.OverlapCircle(startPos, raycastRadius, cf.NoFilter(), hits);
             Debug.DrawRay(transform.position, Vector2.down * (radius + groundThreshold), Color.yellow, 10.0f);
 
-            bool hitGround = false;
-            foreach (RaycastHit2D hit in hits)
+            foreach (Collider2D hit in hits)
             {
-                if (IsGround(hit.collider))
+                if (IsGround(hit))
                 {
-                    hitGround = true;
+                    return hit;
                 }
             }
-
-            return hitGround;
         }
 
         // undefined
-        return false;
+        return null;
+    }
+
+    // Get bounds of current platform
+    public Collider2D GetPlatform()
+    {
+        Collider2D col = GetGround();
+        if(IsPlatform(col))
+        {
+            return col;
+        }
+        return null;
     }
 
     public bool IsOnFlatGround()
     {
-        if (isCircle || isCapsule)
-        {
-            Vector2 startPos = new Vector2(transform.position.x, transform.position.y - radius);
-            RaycastHit2D[] hits = Physics2D.RaycastAll(startPos, Vector2.down, groundThreshold);
-
-            bool hitGround = false;
-            foreach (RaycastHit2D hit in hits)
-            {
-                if (IsFlatPlatform(hit.collider))
-                {
-                    hitGround = true;
-                }
-            }
-
-            return hitGround;
-        }
-
-        // undefined
-        return false;
-
+        return IsFlatPlatform(GetGround());
     }
 
     public bool IsGround(Collider2D collider)
@@ -88,11 +85,16 @@ public class Groundable : MonoBehaviour
              || (!sourceIsBall && collider.tag == ballTag));
     }
 
+    public bool IsPlatform(Collider2D collider)
+    {
+        return collider != null && (collider.tag == platformTag || collider.tag == slantedPlatformTag);
+    }
+
     public bool IsFlatPlatform(Collider2D collider)
     {
         return collider != null && (collider.tag == platformTag);
-
     }
+
 
 
 

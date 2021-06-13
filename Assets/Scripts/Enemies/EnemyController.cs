@@ -11,8 +11,11 @@ public class EnemyController : Groundable
     protected int dir = -1;
     public float health = 10.0f;
     public float damage = 1.0f;
+
+    [HideInInspector]
+    public Collider2D currentPlatform;
     
-    void Start()
+    protected virtual void Start()
     {
         player = GameObject.FindWithTag("Player");
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -24,6 +27,8 @@ public class EnemyController : Groundable
         time = time + Time.deltaTime;
         dist = Vector2.Distance(player.transform.position,transform.position);
         dir = (player.transform.position.x < transform.position.x ? -1 : 1);
+
+        currentPlatform = GetPlatform();
     }
 
     public virtual void receiveDamage(float amount)
