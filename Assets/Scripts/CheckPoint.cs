@@ -18,7 +18,7 @@ public class CheckPoint : MonoBehaviour
     {
         if(Vector2.Distance(player.transform.position,transform.position) <= triggerDistance)
         {
-            PlayerStatus.instance.SetSpawn(new Vector2(transform.position.x, transform.position.y));
+            WorldManager.game.SetPlayerSpawn(new Vector2(transform.position.x, transform.position.y));
             Destroy(this);
         }
     }
