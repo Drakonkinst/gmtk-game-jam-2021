@@ -13,7 +13,7 @@ public class MeleeEnemyController : EnemyController
     public float damage = 10.0f;
     private float nextLunge = -1.0f;
 
-    private float maxLungeTime = 0.5f;
+    public float maxLungeTime = 0.7f;
     private float lungeTime = -1.0f;
 
     //private int behaviorState = 0; // 0 inactive, 1 chasing, 2 lunging
@@ -33,6 +33,7 @@ public class MeleeEnemyController : EnemyController
                 base.rb.AddForce(new Vector2(base.dir * lungeForce, 0.0f), ForceMode2D.Impulse);
                 nextLunge = base.time + lungeCooldown;
                 lungeTime = base.time + maxLungeTime;
+                //Debug.Log("Lunging!");
             }
         }
         else if (base.dist <= chaseRange) // Player entered chasing range
@@ -46,7 +47,12 @@ public class MeleeEnemyController : EnemyController
         bool isLunging = Time.time < lungeTime;
         if(isLunging && col.collider.tag == "Player")
         {
+            //Debug.Log("Melee enemy should deal damage");
             PlayerStatus.instance.Damage(damage);
+        }
+        if(!isLunging && col.collider.tag == "Player")
+        {
+            //Debug.Log("Melee enemy does not damage player because not lunging");
         }
     }
 

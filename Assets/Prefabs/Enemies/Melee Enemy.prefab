@@ -142,3 +142,4 @@ MonoBehaviour:
   lungeForce: 5
   lungeCooldown: 3
   damage: 10
+  maxLungeTime: 0.7
