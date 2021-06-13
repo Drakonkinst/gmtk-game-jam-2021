@@ -20,8 +20,6 @@ public class PlayerStatus : MonoBehaviour
 
     public float health = 100.0f;
     public float mana = 300.0f;
-    public SmoothUIBar healthBarDisplay;
-    public SmoothUIBar manaBarDisplay;
     public float healthBarShakeThreshold = 20.0f;
 
     public float delayToStartManaRegen = 1.5f;
@@ -67,7 +65,7 @@ public class PlayerStatus : MonoBehaviour
     {
         if(amount > healthBarShakeThreshold)
         {
-            healthBarDisplay.Shake();
+            HUD.instance.healthBarDisplay.Shake();
         }
         Heal(-amount);
     }
@@ -84,7 +82,7 @@ public class PlayerStatus : MonoBehaviour
         {
             // Player is dead
         }
-        healthBarDisplay.SetPercent(health / maxHealth);
+        HUD.instance.healthBarDisplay.SetPercent(health / maxHealth);
     }
 
     public void AddMana(float amount)
@@ -117,7 +115,7 @@ public class PlayerStatus : MonoBehaviour
     public void SetMana(float amount)
     {
         mana = Mathf.Clamp(amount, 0.0f, maxMana);
-        manaBarDisplay.SetPercent(mana / maxMana);
+        HUD.instance.manaBarDisplay.SetPercent(mana / maxMana);
     }
 
     private IEnumerator RegenerateMana()
